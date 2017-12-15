@@ -1,0 +1,6 @@
+<launch>
+    <!-- My Package launch file -->
+    <node pkg="semester_project" type="move_drone.py" name="move_drone_node"  output="screen"/>
+    <node pkg="semester_project" type="twist_to_twiststamp.py" name="twist_to_twiststamp_node"  output="screen" />
+
+</launch>

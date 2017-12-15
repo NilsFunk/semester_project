@@ -1,0 +1,21 @@
+<?xml version="1.0"?>
+<package format="2">
+  <name>semester_project</name>
+  <version>0.0.0</version>
+  <description>The semester_project package</description>
+
+  <maintainer email="nilsiism@todo.todo">nilsiism</maintainer>
+
+
+  <license>TODO</license>
+
+  <buildtool_depend>catkin</buildtool_depend>
+  <buildtool_depend>catkin_simple</buildtool_depend>
+
+  <depend>rospy</depend>
+  <depend>geometry_msgs</depend>
+
+  <export>
+
+  </export>
+</package>
