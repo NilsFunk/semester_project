@@ -9,7 +9,11 @@
     </configurations>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="44bd4eb1-2d47-455e-bf90-4941153ae387" name="Default" comment="" />
+    <list default="true" id="44bd4eb1-2d47-455e-bf90-4941153ae387" name="Default" comment="">
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/depth_flight_controller_minimum_snap/include/snap_trajectory_planner.h" afterPath="$PROJECT_DIR$/depth_flight_controller_minimum_snap/include/snap_trajectory_planner.h" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/depth_flight_controller_minimum_snap/src/snap_trajectory_planner.cpp" afterPath="$PROJECT_DIR$/depth_flight_controller_minimum_snap/src/snap_trajectory_planner.cpp" />
+    </list>
     <ignored path="$PROJECT_DIR$/cmake-build-debug/" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="TRACKING_ENABLED" value="true" />
@@ -23,8 +27,8 @@
       <file leaf-file-name="snap_trajectory_planner.cpp" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/depth_flight_controller_minimum_snap/src/snap_trajectory_planner.cpp">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="324">
-              <caret line="42" column="14" lean-forward="false" selection-start-line="42" selection-start-column="14" selection-end-line="42" selection-end-column="14" />
+            <state relative-caret-position="-4122">
+              <caret line="50" column="98" lean-forward="false" selection-start-line="50" selection-start-column="98" selection-end-line="50" selection-end-column="98" />
               <folding />
             </state>
           </provider>
@@ -33,8 +37,8 @@
       <file leaf-file-name="snap_trajectory_planner.h" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/depth_flight_controller_minimum_snap/include/snap_trajectory_planner.h">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="304">
-              <caret line="71" column="54" lean-forward="false" selection-start-line="71" selection-start-column="54" selection-end-line="71" selection-end-column="54" />
+            <state relative-caret-position="414">
+              <caret line="23" column="16" lean-forward="true" selection-start-line="23" selection-start-column="16" selection-end-line="23" selection-end-column="16" />
               <folding />
             </state>
           </provider>
@@ -247,12 +251,12 @@
       <option name="presentableId" value="Default" />
       <updated>1513344453340</updated>
       <workItem from="1513344454482" duration="37030000" />
-      <workItem from="1513385607699" duration="3195000" />
+      <workItem from="1513385607699" duration="5044000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="40225000" />
+    <option name="totallyTimeSpent" value="42074000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="63" y="27" width="1920" height="1173" extended-state="7" />
@@ -443,16 +447,16 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/depth_flight_controller_minimum_snap/include/snap_trajectory_planner.h">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="304">
-          <caret line="71" column="54" lean-forward="false" selection-start-line="71" selection-start-column="54" selection-end-line="71" selection-end-column="54" />
+        <state relative-caret-position="414">
+          <caret line="23" column="16" lean-forward="true" selection-start-line="23" selection-start-column="16" selection-end-line="23" selection-end-column="16" />
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/depth_flight_controller_minimum_snap/src/snap_trajectory_planner.cpp">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="324">
-          <caret line="42" column="14" lean-forward="false" selection-start-line="42" selection-start-column="14" selection-end-line="42" selection-end-column="14" />
+        <state relative-caret-position="-4122">
+          <caret line="50" column="98" lean-forward="false" selection-start-line="50" selection-start-column="98" selection-end-line="50" selection-end-column="98" />
           <folding />
         </state>
       </provider>

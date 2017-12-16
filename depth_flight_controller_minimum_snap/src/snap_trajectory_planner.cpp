@@ -13,7 +13,7 @@ namespace depth_flight_controller {
         desired_state_pub_ = nh_.advertise<quad_msgs::QuadDesiredState>("/hummingbird/desired_state", 1);
         path_pub_ = nh_.advertise<depth_flight_controller_msgs::PathPositions>("/hummingbird/path", 1);
 
-        abs_vel_ = 2.0;
+        abs_vel_ = 1.0;
 
         main_loop_timer_ = nh_.createTimer(ros::Duration(1.0 / 50), &SnapTrajectoryPlanner::mainloop, this);
 
@@ -40,14 +40,15 @@ namespace depth_flight_controller {
             desired_state.header.stamp = ros::Time::now();
             desired_state_pub_.publish(desired_state);
             path_.erase(path_.begin());
-            //curr_path_ = path_;
             curr_state_ = desired_state;
+            //curr_path_ = path_;
+
         }
     }
 
     void SnapTrajectoryPlanner::pathCallback(const depth_flight_controller_msgs::Target &msg)
     {
-        if (msg.valid == true && ros::Time::now() - most_recent_path_generation_ > ros::Duration(2) && is_state_estimate_init_ == true) {
+        if (msg.valid == true && ros::Time::now() - most_recent_path_generation_ > ros::Duration(4) && is_state_estimate_init_ == true) {
             double state_x_pos = state_estimate_.position(0);
             double state_y_pos = state_estimate_.position(1);
 
@@ -159,11 +160,13 @@ namespace depth_flight_controller {
 
             // Determine segments
             std::vector<double> segment_times;
-            const double v_max = 2.0;
+            const double v_max = 1.0;
             const double a_max = 2.0;
             const double magic_fabian_constant = 6.5; // A tuning parameter.
             segment_times = estimateSegmentTimes(vertices, v_max, a_max, magic_fabian_constant);
 
+            /*
+            ////Linear optimization
             // Solve equation
             const int N = 10;
             mav_trajectory_generation::PolynomialOptimization <N> opt(dimension);
@@ -172,13 +175,33 @@ namespace depth_flight_controller {
 
             mav_trajectory_generation::Trajectory trajectory;
             opt.getTrajectory(&trajectory);
+            */
 
-            mav_msgs::EigenTrajectoryPoint state;
-            mav_msgs::EigenTrajectoryPoint::Vector states;
+            ////Non-linear optimization
+
+            mav_trajectory_generation::NonlinearOptimizationParameters parameters;
+            parameters.max_iterations = 1000;
+            parameters.f_rel = 0.05;
+            parameters.x_rel = 0.1;
+            parameters.time_penalty = 500.0;
+            parameters.initial_stepsize_rel = 0.1;
+            parameters.inequality_constraint_tolerance = 0.1;
+
+            const int N = 10;
+            mav_trajectory_generation::PolynomialOptimizationNonLinear<N> opt(dimension, parameters, false);
+            opt.setupFromVertices(vertices, segment_times, derivative_to_optimize);
+            opt.addMaximumMagnitudeConstraint(mav_trajectory_generation::derivative_order::VELOCITY, v_max);                                opt.addMaximumMagnitudeConstraint(mav_trajectory_generation::derivative_order::ACCELERATION, a_max);
+            opt.optimize();
+
+            mav_trajectory_generation::Trajectory trajectory;
+            opt.getTrajectory(&trajectory);
 
             // Different way to get trajectory samples
             /*
-            Whole trajectory:
+            //Whole trajectory:
+            mav_msgs::EigenTrajectoryPoint state;
+            mav_msgs::EigenTrajectoryPoint::Vector states;
+
             double sampling_interval = 0.02;
             bool success = mav_trajectory_generation::sampleWholeTrajectory(trajectory, sampling_interval, &states);
             */
@@ -276,9 +299,11 @@ namespace depth_flight_controller {
             double end_Time = endTime.toSec();
             double start_Time = startTime.toSec();
 
-            int number_delted_samples = int((end_Time-start_Time)/0.02) + 2;
+            std::cout  << "Duration for path planning: " << end_Time - start_Time << std::endl;
 
-            path.erase(path.begin(),path.begin()+number_delted_samples);
+            //int number_delted_samples = int((end_Time-start_Time)/0.02);
+
+            //path.erase(path.begin(),path.begin()+number_delted_samples);
             path_.clear();
             path_ = path;
 

@@ -9,6 +9,7 @@
 #include <mav_trajectory_generation/polynomial_optimization_linear.h>
 #include <mav_trajectory_generation/trajectory.h>
 #include <mav_trajectory_generation_ros/trajectory_sampling.h>
+#include <mav_trajectory_generation/polynomial_optimization_nonlinear.h>
 #include "ros/ros.h"
 #include "quad_msgs/QuadDesiredState.h"
 #include <fstream>
