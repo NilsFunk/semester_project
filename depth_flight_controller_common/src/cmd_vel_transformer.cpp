@@ -26,7 +26,6 @@ namespace depth_flight_controller {
     void CmdVelTransformer::setCmdVelWorldFrame(const QuadState &state_estimate, const Eigen::Vector3d &body_velocities, const Eigen::Vector3d &body_bodyrates)
     {
         Eigen::Matrix3d state_estimate_rot_mat = quaternionToRotationMatrix(state_estimate.orientation);
-        //std::cout << "ang vel: " << state_estimate.bodyrates(2) << "; lin vel: " << state_estimate.velocity(1) << std::endl;
         Eigen::Vector3d world_velocities = state_estimate_rot_mat * body_velocities;
         Eigen::Vector3d world_bodyrates = state_estimate_rot_mat * body_bodyrates;
         geometry_msgs::TwistStamped cmd_vel_world_frame;
@@ -60,7 +59,7 @@ namespace depth_flight_controller {
 
 int main(int argc, char **argv)
 {
-    ros::init(argc, argv, "cmd_vel_transformer_node");
+    ros::init(argc, argv, "cmd_vel_transformer");
 
     depth_flight_controller::CmdVelTransformer cmd_vel_transformer;
 

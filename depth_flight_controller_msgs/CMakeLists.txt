@@ -13,6 +13,8 @@ add_message_files(
    FILES
    HorizonPoints.msg
    Target.msg
+   PathPosition.msg
+   PathPositions.msg
 )
 
 generate_messages(

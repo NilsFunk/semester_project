@@ -15,6 +15,12 @@ float64 side
 # Target valid [true; false]
 bool valid
 
+# Obstacle depth [m]
+float64 obstacle_depth
+
+# Target valid [true; false]
+float64 obstacle_Y
+
 # Drone yaw when image taken [rad]
 float64 yaw
 

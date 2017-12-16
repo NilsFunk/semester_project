@@ -2,7 +2,7 @@
 
 <node pkg="depth_flight_controller_common" type="image_clipper" name="image_clipper" output="screen"/>
 
-<node pkg="depth_flight_controller_common" type="c_space_expander" name="c_space_expander" output="screen"/>
+<node pkg="depth_flight_controller_common" type="c_space_expander_horizon" name="c_space_expander_horizon" output="screen"/>
 
 <node pkg="depth_flight_controller_minimum_snap" type="target_finder" name="target_finder" output="screen"/>
 

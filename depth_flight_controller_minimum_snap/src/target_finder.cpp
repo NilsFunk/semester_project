@@ -138,6 +138,7 @@ namespace depth_flight_controller
         cv::Point center_pos = horizon_points.at(2);
         cv::Point max_depth_pos;
         double max_depth = -1;
+        double min_depth_ib = 6.0;
 
         if (is_max_valid_ == true)
         {
@@ -148,6 +149,7 @@ namespace depth_flight_controller
 
 
             cv::LineIterator it2(depth_expanded_img_, edge_left_pos, edge_right_pos, 8);
+            cv::LineIterator it3 = it2;
             std::vector<cv::Point> free_space_points;
             //free_space_points.erase(free_space_points.begin(),free_space_points.end());
 
@@ -158,7 +160,6 @@ namespace depth_flight_controller
             // Reset values
             double min_depth_left = 6.0;
             double min_depth_right = 6.0;
-            double min_depth_ib = 6.0;
             double min_dist_center_max = 180;
             double max_dist_center_ib_min = 180;
             double max_dist_center_left_min = 180;
@@ -228,19 +229,19 @@ namespace depth_flight_controller
             } else
             {
                 // Iterate over line
-                for(int i = 0; i < it2.count; i++, ++it2)
+                for(int i = 0; i < it3.count; i++, ++it3)
                 {
-                    float expanded_depth = depth_expanded_img_.at<float>(it2.pos());
+                    float expanded_depth = depth_expanded_img_.at<float>(it3.pos());
 
                     // Creat position point
-                    int x_pos = it2.pos().x;
-                    int y_pos = it2.pos().y;
-                    cv::Point pos(x_pos,y_pos);
+                    int x_pos = it3.pos().x;
+                    int y_pos = it3.pos().y;
+                    cv::Point current_pos(x_pos,y_pos);
 
                     // Calc dist to center (e.g. needed change of orientation)
-                    float dist_center = euclideanDist(pos, center_pos);
-                    int pos_left_of_horizon = leftOfSecArg(pos, center_pos);
-                    int pos_right_of_max = leftOfSecArg(max_depth_pos, pos);
+                    float dist_center = euclideanDist(current_pos, center_pos);
+                    int pos_left_of_horizon = leftOfSecArg(current_pos, center_pos);
+                    int pos_right_of_max = leftOfSecArg(max_depth_pos, current_pos);
 
                     if ((pos_right_of_max == -1 && pos_left_of_horizon == -1) || (pos_right_of_max == -1 && pos_left_of_horizon == 0) || (pos_right_of_max == 1 && pos_left_of_horizon == 0) || (pos_right_of_max == 1 && pos_left_of_horizon == 1) || (pos_right_of_max == 0 && pos_left_of_horizon == 0))
                     {
@@ -248,7 +249,7 @@ namespace depth_flight_controller
                         {
                             max_dist_center_ib_min = dist_center;
                             min_depth_ib = expanded_depth;
-                            min_depth_ib_pos = pos;
+                            min_depth_ib_pos = current_pos;
                         }
                     }
                 }
@@ -270,7 +271,6 @@ namespace depth_flight_controller
         {
             max_depth_pos = cv::Point(-50,-50);
             center_pos = cv::Point(-50,-50);
-
         }
 
         min_depth_left_pos = cv::Point(-50,-50);
@@ -285,16 +285,20 @@ namespace depth_flight_controller
 
         target.depth = max_depth;
         target.Y = target_dist_center / 151.18 * max_depth;
+        target.obstacle_depth   = min_depth_ib;
+        target.obstacle_Y       = target_dist_center / 151.18 * min_depth_ib;
 
-        std::cout << "max depth pos: " << max_depth_pos << std::endl;
-        std::cout << "max depth : " << max_depth << std::endl;
-        std::cout << "center pos: " << center_pos << std::endl;
-        std::cout << "original_x_pos: " << target.position.x << std::endl;
-        std::cout << "original_y_pos: " << target.position.y << std::endl;
-        std::cout << "original_yaw: " << target.yaw << std::endl;
-        std::cout << "target_dist_center: " << target_dist_center << std::endl;
-        std::cout << "targt angle: " << target_angle << std::endl;
-        std::cout << "target_Y: " << target.Y << std::endl;
+        //std::cout << "max depth pos: " << max_depth_pos << std::endl;
+        //std::cout << "max depth : " << max_depth << std::endl;
+        //std::cout << "min depth : " << min_depth_ib << std::endl;
+        //std::cout << "center pos: " << center_pos << std::endl;
+        //std::cout << "original_x_pos: " << target.position.x << std::endl;
+        //std::cout << "original_y_pos: " << target.position.y << std::endl;
+        //std::cout << "original_yaw: " << target.yaw << std::endl;
+        //std::cout << "target_dist_center: " << target_dist_center << std::endl;
+        //std::cout << "targt angle: " << target_angle << std::endl;
+        //std::cout << "target_Y: " << target.Y << std::endl;
+        //std::cout << "obstacle_Y: " << target.obstacle_Y << std::endl;
 
         if (target_angle == 0)
         {
@@ -316,7 +320,6 @@ namespace depth_flight_controller
 
         Eigen::Vector3d eig_left(edge_left_pos.x, edge_left_pos.y,0);
         Eigen::Vector3d eig_right(edge_right_pos.x, edge_right_pos.y,0);
-        //Eigen::Vector3d eig_right(edge_right_pos.x, edge_right_pos.y,0);
         Eigen::Vector3d eig_center(center_pos.x,center_pos.y,0);
         Eigen::Vector3d eig_max_depth(max_depth_pos.x, max_depth_pos.y,0);
         Eigen::Vector3d eig_min_depth_left(min_depth_left_pos.x, min_depth_left_pos.y,0);

@@ -1,9 +1,9 @@
-#include "c_space_expander.h"
+#include "c_space_expander_horizon.h"
 
 
 namespace depth_flight_controller {
 
-    CSpaceExpander::CSpaceExpander()
+    CSpaceExpanderHorizon::CSpaceExpanderHorizon()
             : it_(nh_)
     {
         double focal_length_ = 151.81;
@@ -138,31 +138,41 @@ namespace depth_flight_controller {
         for (int z_cm = 0; z_cm < max_depth_; ++z_cm)
             reduced_depth_[z_cm] = float(std::max(z_cm,20))/100-drone_radius_;
 
-        image_sub_ = it_.subscribe("/hummingbird/vi_sensor/camera_depth/depth/disparity", 1, &CSpaceExpander::imageCb, this);
+        image_sub_ = it_.subscribe("/hummingbird/vi_sensor/camera_depth/depth/disparity", 1, &CSpaceExpanderHorizon::imageCallback, this);
         image_pub_ = it_.advertise("/hummingbird/vi_sensor/camera_depth/depth/expanded", 1);
 
         state_estimate_original_img_pub_ = nh_.advertise<quad_msgs::QuadStateEstimate>("/hummingbird/state_estimate_original_img", 1);
-        state_estimate_sub_ = nh_.subscribe("/hummingbird/state_estimate", 1, &CSpaceExpander::stateEstimateCallback, this);
+        state_estimate_sub_ = nh_.subscribe("/hummingbird/state_estimate", 1, &CSpaceExpanderHorizon::stateEstimateCallback, this);
+
+        K = (cv::Mat_<double>(3,3)<<151.8076510090423, 0.0, 80.5, 0.0, 151.8076510090423, 60.5, 0.0, 0.0, 1.0);
+        T = (cv::Mat_<double>(3,1) <<  0, 0, 0);
+        distCoeffs = (cv::Mat_<double>(4,1) <<  0, 0, 0, 0);
+
+        body_cam_rot_ << 0, -1, 0, 0, 0, 1, 1, 0, 0;
+        horizon_center_point_world_ << 100, 0, 0;
+        horizon_left_point_world_ << 1000, 100, 0;
+        horizon_right_point_world_ << 1000, -100, 0;
+        rvec = (cv::Mat_<double>(3,3) << 1, 0, 0, 0, 1, 0, 0, 0, 1);
     }
 
 
-    CSpaceExpander::~CSpaceExpander()
+    CSpaceExpanderHorizon::~CSpaceExpanderHorizon()
     {
 
     }
 
-    void CSpaceExpander::stateEstimateCallback(const quad_msgs::QuadStateEstimate::ConstPtr &msg)
+    void CSpaceExpanderHorizon::stateEstimateCallback(const quad_msgs::QuadStateEstimate::ConstPtr &msg)
     {
         state_estimate_ = QuadState(*msg);
         state_estimate_msg_ = *msg;
     }
 
 
-    void CSpaceExpander::imageCb(const sensor_msgs::ImageConstPtr& msg)
+    void CSpaceExpanderHorizon::imageCallback(const sensor_msgs::ImageConstPtr& msg)
     {
         ros::Time start = ros::Time::now();
         quad_msgs::QuadStateEstimate state_estimate_original_img_msg = state_estimate_msg_;
-
+        QuadState state_estimate_original_img_ = state_estimate_;
 
 
         cv_bridge::CvImagePtr cv_ptr_original;
@@ -187,10 +197,12 @@ namespace depth_flight_controller {
         //cv::GaussianBlur(depth_float_img_original_, depth_float_img_original_, cv::Size(3,3), 0, 0 );
 
         // Round image values to [cm]
-        CSpaceExpander::changeImagePrecision(depth_float_img_original_, depth_float_img_rounded_); // Input: Original image values in [m]; Output: Rounded image values in [cm]
+        CSpaceExpanderHorizon::changeImagePrecision(depth_float_img_original_, depth_float_img_rounded_); // Input: Original image values in [m]; Output: Rounded image values in [cm]
+
+        std::vector<cv::Point> horizon_points = buildHorizon(state_estimate_);
 
         // Expand c-space
-        CSpaceExpander::expandImage(depth_float_img_original_, depth_float_img_rounded_);
+        CSpaceExpanderHorizon::expandImage(depth_float_img_original_, depth_float_img_rounded_, horizon_points);
 
 
         ros::Time end = ros::Time::now();
@@ -200,14 +212,14 @@ namespace depth_flight_controller {
         image_pub_.publish(cv_ptr_original->toImageMsg());
     }
 
-    float CSpaceExpander::roundToPrecision(float imageDepth,int precision)
+    float CSpaceExpanderHorizon::roundToPrecision(float imageDepth,int precision)
     {
         // Do initial checks
         float roundedImageDepth = roundf(imageDepth * precision_);
         return roundedImageDepth;
     }
 
-    void CSpaceExpander::changeImagePrecision(cv::Mat& IO, cv::Mat& IR)
+    void CSpaceExpanderHorizon::changeImagePrecision(cv::Mat& IO, cv::Mat& IR)
     {
         // Accept only float type matrices
         CV_Assert(IO.depth() == CV_32FC1);
@@ -231,17 +243,26 @@ namespace depth_flight_controller {
             pR = IR.ptr<float>(i);
             for ( j = 0; j < nCols; ++j)
             {
-                pR[j] = CSpaceExpander::roundToPrecision(pO[j], 2);
+                pR[j] = CSpaceExpanderHorizon::roundToPrecision(pO[j], 2);
             }
         }
     }
 
-    //void CSpaceExpander::expandImage(cv::Mat& IO, cv::Mat& IR, cv::Mat& IE)
-    void CSpaceExpander::expandImage(cv::Mat& IO, cv::Mat& IR)
+    //void CSpaceExpanderHorizon::expandImage(cv::Mat& IO, cv::Mat& IR, cv::Mat& IE)
+    void CSpaceExpanderHorizon::expandImage(cv::Mat& IO, cv::Mat& IR, std::vector<cv::Point> horizon_points)
     {
         CV_Assert(IO.depth() == CV_32FC1);
 
-        for (int v = 0; v < 120; ++v)
+        cv::Point edge_left_pos = horizon_points.at(0);
+        cv::Point edge_right_pos = horizon_points.at(1);
+
+        int v_min_edge = std::min(edge_left_pos.y, edge_right_pos.y);
+        int v_max_edge = std::max(edge_left_pos.y, edge_right_pos.y);
+
+        int v_min = std::max(5, v_min_edge);
+        int v_max = std::min(114,v_max_edge);
+
+        for (int v = v_min-5; v < v_max+6; ++v)
         {
             for (int u = 0; u < 160; ++u)
             {
@@ -263,13 +284,100 @@ namespace depth_flight_controller {
         }
         cv::GaussianBlur(IO, IO, cv::Size( 5, 3), 0, 0 );
     }
+
+    std::vector<cv::Point> CSpaceExpanderHorizon::buildHorizon(const QuadState state_estimate)
+    {
+        // Calculate edge points of line
+        Eigen::Matrix3d rvec_state_estimate = CSpaceExpanderHorizon::tiltCalculator(state_estimate);
+
+        Eigen::Vector3d horizon_center_point_cam = body_cam_rot_ * rvec_state_estimate *horizon_center_point_world_;
+        Eigen::Vector3d horizon_left_point_cam = body_cam_rot_ * rvec_state_estimate * horizon_left_point_world_;
+        Eigen::Vector3d horizon_right_point_cam = body_cam_rot_ * rvec_state_estimate * horizon_right_point_world_;
+
+        std::vector<cv::Point3f> horizon_3D_points;
+        std::vector<cv::Point2f> projected_horizon_points;
+
+        horizon_3D_points.push_back(cv::Point3d(horizon_left_point_cam(0),horizon_left_point_cam(1),horizon_left_point_cam(2)));
+        horizon_3D_points.push_back(cv::Point3d(horizon_right_point_cam(0),horizon_right_point_cam(1),horizon_right_point_cam(2)));
+        horizon_3D_points.push_back(cv::Point3d(horizon_center_point_cam(0),horizon_center_point_cam(1),horizon_center_point_cam(2)));
+
+        cv::Rodrigues(rvec, rvecR);
+        cv::projectPoints( cv::Mat(horizon_3D_points), rvecR, T, K, distCoeffs, projected_horizon_points);
+
+        cv::Point pt1 = cv::Point(projected_horizon_points[0].x,projected_horizon_points[0].y);
+        cv::Point pt2 = cv::Point(projected_horizon_points[1].x,projected_horizon_points[1].y);
+        cv::Point horizon_center = cv::Point(projected_horizon_points[2].x,projected_horizon_points[2].y);
+
+        std::vector<cv::Point> horizon_points = CSpaceExpanderHorizon::fullLine(pt1, pt2, horizon_center);
+
+        return horizon_points;
+    }
+
+    Eigen::Matrix3d CSpaceExpanderHorizon::tiltCalculator(const QuadState &state_estimate)
+    {
+        Eigen::Quaterniond q = state_estimate.orientation;
+        Eigen::Vector3d euler_angles = CSpaceExpanderHorizon::toEulerAngle(q);
+        Eigen::Matrix3d state_estimate_rot_mat = eulerAnglesZYXToRotationMatrix(euler_angles);
+        Eigen::Matrix3d state_estimate_rot_mat_inv = state_estimate_rot_mat.inverse();
+        return state_estimate_rot_mat;
+    }
+
+    Eigen::Vector3d CSpaceExpanderHorizon::toEulerAngle(const Eigen::Quaterniond& q)
+    {
+        double roll = atan2(2*q.w()*q.x() + 2*q.y()*q.z(), q.w()*q.w() - q.x()*q.x() - q.y()*q.y() + q.z()*q.z());
+        double pitch = -asin(2*q.x()*q.z() - 2*q.w()*q.y());
+        yaw_ = atan2(2*q.w()*q.z() + 2*q.x()*q.y(), q.w()*q.w() + q.x()*q.x() - q.y()*q.y() - q.z()*q.z());
+
+        Eigen::Vector3d euler_angles(roll, pitch, 0);
+
+        return euler_angles;
+    }
+
+    std::vector<cv::Point> CSpaceExpanderHorizon::fullLine(cv::Point a, cv::Point b, cv::Point center_pos)
+    {
+        double slope = Slope(a.x, a.y, b.x, b.y);
+
+        cv::Point edge_left_pos = cv::Point(0,0);
+        cv::Point edge_right_pos = cv::Point(depth_float_img_original_.cols-1,depth_float_img_original_.rows-1);
+
+        edge_left_pos.y = -(a.x - edge_left_pos.x) * slope + a.y;
+        edge_right_pos.y = -(b.x - edge_right_pos.x) * slope + b.y;
+
+        cv::LineIterator it(depth_float_img_original_, edge_left_pos, edge_right_pos, 8);
+
+        for(int i = 0; i < it.count; i++, ++it)
+        {
+            if(i == 0)
+            {
+                edge_left_pos = it.pos();
+            }
+
+            if(i == (it.count - 1))
+            {
+                edge_right_pos = it.pos();
+            }
+        }
+
+        std::vector<cv::Point> horizon_points;
+        horizon_points.push_back(edge_left_pos);
+        horizon_points.push_back(edge_right_pos);
+        horizon_points.push_back(center_pos);
+
+        return horizon_points;
+    }
+
+    double CSpaceExpanderHorizon::Slope(int x0, int y0, int x1, int y1)
+    {
+        return (double)(y1-y0)/(x1-x0);
+    }
+
 }
 
 int main(int argc, char** argv)
 {
-    ros::init(argc, argv, "c_space_expander");
+    ros::init(argc, argv, "c_space_expander_horizon");
 
-    depth_flight_controller::CSpaceExpander cse;
+    depth_flight_controller::CSpaceExpanderHorizon cse;
 
     ros::spin();
 

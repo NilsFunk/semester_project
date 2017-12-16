@@ -14,6 +14,8 @@
 #include "opencv2/calib3d/calib3d.hpp"
 #include "opencv2/highgui/highgui.hpp"
 #include "geometry_msgs/TwistStamped.h"
+#include "depth_flight_controller_msgs/PathPosition.h"
+#include "depth_flight_controller_msgs/PathPositions.h"
 #include "geometry_msgs/Quaternion.h"
 #include "quad_msgs/QuadStateEstimate.h"
 #include "depth_flight_controller_msgs/HorizonPoints.h"
@@ -39,9 +41,9 @@ namespace depth_flight_controller
 
         void originalImageCallback(const sensor_msgs::ImageConstPtr& msg);
         void expandedImageCallback(const sensor_msgs::ImageConstPtr& msg);
+        void pathCallback(const depth_flight_controller_msgs::PathPositions& msg);
         void horizonPointsCallback(const depth_flight_controller_msgs::HorizonPoints& msg);
         float euclideanDist(cv::Point& p, cv::Point& q);
-
         void depthToCV8UC1(const cv::Mat& float_img, cv::Mat& mono8_img);
 
     protected:
@@ -56,6 +58,7 @@ namespace depth_flight_controller
         image_transport::Publisher expanded_top_image_pub_;
 
         ros::Subscriber horizon_points_sub_;
+        ros::Subscriber path_sub_;
 
     private:
         sensor_msgs::Image depth_rgb_img_ros_;
@@ -71,6 +74,11 @@ namespace depth_flight_controller
         cv::Point min_depth_left_pos_;
         cv::Point min_depth_right_pos_;
         cv::Point min_depth_ib_pos_;
+
+        std::vector<float> path_x_pos_;
+        std::vector<float> path_y_pos_;
+        int number_path_pos_;
+
     };
 }
 

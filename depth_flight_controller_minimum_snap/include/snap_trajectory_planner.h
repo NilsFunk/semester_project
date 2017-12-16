@@ -13,6 +13,8 @@
 #include "quad_msgs/QuadDesiredState.h"
 #include <fstream>
 #include "quad_msgs/QuadStateEstimate.h"
+#include "depth_flight_controller_msgs/PathPosition.h"
+#include "depth_flight_controller_msgs/PathPositions.h"
 #include "quad_common/quad_state.h"
 #include "depth_flight_controller_msgs/Target.h"
 #include <iostream>
@@ -52,6 +54,7 @@ namespace depth_flight_controller
         ros::Subscriber state_estimate_original_sub_;
         ros::Subscriber target_sub_;
         ros::Publisher desired_state_pub_;
+        ros::Publisher path_pub_;
 
         ros::Timer main_loop_timer_;
 
@@ -62,18 +65,16 @@ namespace depth_flight_controller
         double sample_switch_frequency_;
 
         bool generate_new_path_;
-        bool is_new_path;
-        bool is_starting_;
+        bool is_new_path_;
+        bool is_state_estimate_init_;
         bool is_trajectory_valid_;
         bool do_initialize_;
 
         std::vector<quad_msgs::QuadDesiredState> path_;
-        std::vector<quad_msgs::QuadDesiredState> path_new_;
+        //std::vector<quad_msgs::QuadDesiredState> curr_path_;
         quad_msgs::QuadDesiredState curr_state_;
 
         double abs_vel_;
-        double target_radius;
-        double super_factor_;
 
         time_t tstart, tend;
 

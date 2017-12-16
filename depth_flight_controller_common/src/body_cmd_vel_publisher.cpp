@@ -17,41 +17,10 @@ int main(int argc, char **argv)
 
     while (ros::ok())
     {
-        /*for( int a = 1; a < 5; a = a + 1 )
-        {
-            geometry_msgs::TwistStamped msg;
-
-            msg.header.stamp = ros::Time::now();
-            msg.twist.linear.y = 1.5;
-            msg.twist.angular.z = 0.0;
-
-            cmd_vel_base_frame_pub.publish(msg);
-
-            ros::spinOnce();
-
-            loop_rate.sleep();
-        }
-
-        for( int b = 1; b < 5; b = b + 1 )
-        {
-            geometry_msgs::TwistStamped msg;
-
-            msg.header.stamp = ros::Time::now();
-            msg.twist.linear.y = -1.5;
-            msg.twist.angular.z = 0;
-
-            cmd_vel_base_frame_pub.publish(msg);
-
-            ros::spinOnce();
-
-            loop_rate.sleep();
-        }*/
-
-
         geometry_msgs::TwistStamped msg;
 
         msg.header.stamp = ros::Time::now();
-        msg.twist.linear.y = 0;
+        msg.twist.linear.x = 0.6;
         msg.twist.angular.z = 1;
 
         cmd_vel_base_frame_pub.publish(msg);
@@ -59,8 +28,6 @@ int main(int argc, char **argv)
         ros::spinOnce();
 
         loop_rate.sleep();
-
-
     }
 
     return 0;

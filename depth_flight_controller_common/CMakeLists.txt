@@ -33,6 +33,9 @@ target_link_libraries(cmd_vel_transformer ${catkin_LIBRARIES})
 cs_add_executable(c_space_expander src/c_space_expander.cpp)
 target_link_libraries(c_space_expander ${OpenCV_LIBS})
 
+cs_add_executable(c_space_expander_horizon src/c_space_expander_horizon.cpp)
+target_link_libraries(c_space_expander_horizon ${OpenCV_LIBS})
+
 include_directories(
         ${catkin_INCLUDE_DIRS}
 )

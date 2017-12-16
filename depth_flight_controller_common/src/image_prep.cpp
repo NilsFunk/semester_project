@@ -8,6 +8,7 @@ namespace depth_flight_controller
         expanded_image_sub_ = it_.subscribe("/hummingbird/vi_sensor/camera_depth/depth/expanded", 1, &ImagePrep::expandedImageCallback, this);
         original_image_sub_ = it_.subscribe("/hummingbird/vi_sensor/camera_depth/depth/clipped", 1, &ImagePrep::originalImageCallback, this);
         horizon_points_sub_ = nh_.subscribe("/hummingbird/horizon_points" , 1, &ImagePrep::horizonPointsCallback, this);
+        path_sub_ = nh_.subscribe("/hummingbird/path", 1, &ImagePrep::pathCallback, this);
 
         horizon_image_pub_ = it_.advertise("/hummingbird/vi_sensor/camera_depth/depth/horizon", 1);
         original_top_image_pub_ = it_.advertise("/hummingbird/vi_sensor/camera_depth/depth/disparity_top_view", 1);
@@ -16,6 +17,19 @@ namespace depth_flight_controller
 
     ImagePrep::~ImagePrep()
     {
+    }
+
+    void ImagePrep::pathCallback(const depth_flight_controller_msgs::PathPositions& msg)
+    {
+        //int number_pos_path = sizeof(msg.path_positions)/sizeof(msg.path_positions.at(0));
+        int number_path_pos_ = msg.path_positions.size();
+        path_x_pos_.clear();
+        path_y_pos_.clear();
+        for (int i = 0; i < number_path_pos_; ++i)
+        {
+            path_x_pos_.push_back(msg.path_positions[i].x_pos);
+            path_y_pos_.push_back(msg.path_positions[i].y_pos);
+        }
     }
 
     void ImagePrep::expandedImageCallback(const sensor_msgs::ImageConstPtr& msg)
@@ -46,42 +60,54 @@ namespace depth_flight_controller
         cv::circle(depth_horizon_img_, horizon_center_, 3, CV_RGB(0,0,255));;
         line(depth_horizon_img_,pt1_,pt2_,CV_RGB(0,0,0),1,8,0);
 
-
-
         cv::LineIterator it(depth_horizon_img_, pt1_, pt2_, 8);
-        cv::LineIterator it2 = it;
         std::vector<float> buf(it.count);
-
         cv::Mat depth_original_top_img(500,530,CV_8UC1,cv::Scalar(255));
         cv::Mat depth_expanded_top_img(500,530,CV_8UC1,cv::Scalar(255));
 
-        for(int i = 0; i < it2.count; i++, ++it2)
+        for(int i = 0; i < it.count; i++, ++it)
         {
-            cv::Point current_pos = cv::Point(it2.pos().x, it2.pos().y);
-            //std::cout << "current_pos: " << current_pos << std::endl;
-            //std::cout << "horizon_center: " << horizon_center_ << std::endl;
+            cv::Point current_pos = cv::Point(it.pos().x, it.pos().y);
 
             float dist_horizon = euclideanDist(current_pos, horizon_center_);
-            //std::cout << "dist_horizon: " << dist_horizon << std::endl;
 
-            float expanded_depth_val = depth_expanded_img_.at<float>(it2.pos());
-            float original_depth_val = depth_original_img.at<float>(it2.pos());
-
-
+            float expanded_depth_val = depth_expanded_img_.at<float>(it.pos());
+            float original_depth_val = depth_original_img.at<float>(it.pos());
 
             int original_x_pos = int(original_depth_val * dist_horizon / 1.5180765 +265);
             int expanded_x_pos = int(expanded_depth_val * dist_horizon / 1.5180765 +265);
 
-            //std::cout << "expanded_x_pos: " << expanded_x_pos << "; expanded_depth: " << expanded_depth_val << std::endl;
-            //std::cout << "original_x_pos: " << original_x_pos << "; original_depth: " << original_depth_val << std::endl << std::endl;
 
             int expanded_depth_val_cm = 500-int(expanded_depth_val*100);
             int original_depth_val_cm = 500-int(original_depth_val*100);
 
-            //std::cout << "original_x_pos: " << original_x_pos << "; original_depth_val_cm: " << original_depth_val_cm << std::endl << std::endl;
-
             depth_original_top_img.at<uchar>(cv::Point(original_x_pos, original_depth_val_cm)) = 0;
             depth_expanded_top_img.at<uchar>(cv::Point(expanded_x_pos, expanded_depth_val_cm)) = 0;
+        }
+
+        std::vector<float> path_x_pos = path_x_pos_;
+        std::vector<float> path_y_pos = path_y_pos_;
+
+        if (path_x_pos.size()>0)
+        {
+            int number_sampels = path_x_pos.size();
+
+            for(int i = 0; i < number_sampels; ++i)
+            {
+                float current_path_x_pos = path_x_pos.at(0);
+                float current_path_y_pos = path_y_pos.at(0);
+
+                int current_path_x_pos_pxl = 500-int(current_path_x_pos*100);
+                int current_path_y_pos_pxl = 265-int(current_path_y_pos*100);
+
+                if (current_path_x_pos_pxl < 499 && current_path_x_pos_pxl > 0 && current_path_y_pos_pxl > 0 && current_path_y_pos_pxl < 530)
+                {
+                    depth_original_top_img.at<uchar>(cv::Point(current_path_y_pos_pxl, current_path_x_pos_pxl)) = 100;
+                    depth_expanded_top_img.at<uchar>(cv::Point(current_path_y_pos_pxl, current_path_x_pos_pxl)) = 100;
+                }
+                path_x_pos.erase(path_x_pos.begin());
+                path_y_pos.erase(path_y_pos.begin());
+            }
         }
 
         cv::circle(depth_horizon_img_, max_depth_pos_, 3, CV_RGB(255,0,0));
@@ -105,14 +131,8 @@ namespace depth_flight_controller
         line(depth_expanded_top_img,cv::Point(265,500),expanded_fov_right_pt,100,1,8,0);
         line(depth_expanded_top_img,cv::Point(265,500),expanded_fov_left_pt,100,1,8,0);
 
-        cv::circle(depth_expanded_top_img, cv::Point(265+25,500-47), 3, CV_RGB(255,0,0));
-        cv::circle(depth_expanded_top_img, cv::Point(265-25,500-47), 3, CV_RGB(255,0,0));
-
-        //ellipse(depth_expanded_top_img,cv::Point(280,400), cv::Size(70,70),0,0,350, 100, 1, 8,0);
-
-        cv::waitKey(3);
-
-        //cv::imshow(OPENCV_WINDOW01, image_name);
+        //cv::circle(depth_expanded_top_img, cv::Point(265+25,500-47), 3, CV_RGB(255,0,0));
+        //cv::circle(depth_expanded_top_img, cv::Point(265-25,500-47), 3, CV_RGB(255,0,0));
 
         cv_horizon.header.stamp = ros::Time::now();
         cv_horizon.header.frame_id = "horizon_view_image";

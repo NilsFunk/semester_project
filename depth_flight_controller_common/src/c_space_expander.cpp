@@ -190,10 +190,7 @@ namespace depth_flight_controller {
         CSpaceExpander::changeImagePrecision(depth_float_img_original_, depth_float_img_rounded_); // Input: Original image values in [m]; Output: Rounded image values in [cm]
 
         // Expand c-space
-        //CSpaceExpander::expandImage(depth_float_img_original_, depth_float_img_rounded_, depth_float_img_expanded_);
         CSpaceExpander::expandImage(depth_float_img_original_, depth_float_img_rounded_);
-
-        // Publish expanded image to "/hummingbird/vi_sensor/camera_depth/depth/expanded"
 
 
         ros::Time end = ros::Time::now();

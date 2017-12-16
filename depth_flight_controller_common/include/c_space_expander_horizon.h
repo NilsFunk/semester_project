@@ -10,8 +10,12 @@
 #include <image_transport/image_transport.h>
 #include <cv_bridge/cv_bridge.h>
 #include <sensor_msgs/image_encodings.h>
-#include <opencv2/imgproc/imgproc.hpp>
-#include <opencv2/highgui/highgui.hpp>
+#include "opencv2/core/core.hpp"
+#include "opencv2/imgproc/imgproc.hpp"
+#include "opencv2/calib3d/calib3d.hpp"
+#include "opencv2/highgui/highgui.hpp"
+#include "quad_common/geometry_eigen_conversions.h"
+#include "quad_common/math_common.h"
 #include <math.h>
 #include <algorithm>
 #include <fstream>
@@ -24,20 +28,26 @@ namespace depth_flight_controller
 
     using namespace quad_common;
 
-    class CSpaceExpander
+    class CSpaceExpanderHorizon
     {
     public:
-        CSpaceExpander();
-        ~CSpaceExpander();
+        CSpaceExpanderHorizon();
+        ~CSpaceExpanderHorizon();
 
-        void imageCb(const sensor_msgs::ImageConstPtr& msg);
+        void imageCallback(const sensor_msgs::ImageConstPtr& msg);
         void depthToCV8UC1(const cv::Mat& float_img, cv::Mat& mono8_img);
         void stateEstimateCallback(const quad_msgs::QuadStateEstimate::ConstPtr &msg);
         float roundToPrecision(float val,int precision);
         void changeImagePrecision(cv::Mat& IO, cv::Mat& IR);
-        void expandImage(cv::Mat& IO, cv::Mat& IR);
+        void expandImage(cv::Mat& IO, cv::Mat& IR, std::vector<cv::Point> horizon_points);
         void writeMapU(std::ostream& os);
         void writeMapV(std::ostream& os);
+
+        Eigen::Matrix3d tiltCalculator(const QuadState &state_estimate);
+        Eigen::Vector3d toEulerAngle(const Eigen::Quaterniond& q);
+        double Slope(int x0, int y0, int x1, int y1);
+        std::vector<cv::Point> fullLine(cv::Point a, cv::Point b, cv::Point center_pos);
+        std::vector<cv::Point> buildHorizon(const QuadState state_estimate);
 
     protected:
         ros::NodeHandle nh_;
@@ -66,6 +76,25 @@ namespace depth_flight_controller
         cv::Point min_depth_loc_, max_depth_loc_;
         QuadState state_estimate_;
         quad_msgs::QuadStateEstimate state_estimate_msg_;
+
+        // Camera intrinsic and extrinsic information
+        cv::Mat K;
+        cv::Mat rvecR;
+        cv::Mat T;
+        cv::Mat distCoeffs;
+
+        Eigen::Matrix3d body_cam_rot_;
+        Eigen::Vector3d horizon_center_point_world_;
+        Eigen::Vector3d horizon_left_point_world_;
+        Eigen::Vector3d horizon_right_point_world_;
+        cv::Mat rvec;
+
+        // Horizon build information
+        cv::Point pt1_; // Horizon point left edge
+        cv::Point pt2_; // Horizon point right edge
+        std::vector<cv::Point3f> horizon_points;
+        std::vector<cv::Point2f> projected_horizon_points;
+        double yaw_;
     };
 }
 
