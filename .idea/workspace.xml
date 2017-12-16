@@ -10,7 +10,6 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="44bd4eb1-2d47-455e-bf90-4941153ae387" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/depth_flight_controller_minimum_snap/include/snap_trajectory_planner.h" afterPath="$PROJECT_DIR$/depth_flight_controller_minimum_snap/include/snap_trajectory_planner.h" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/depth_flight_controller_minimum_snap/src/snap_trajectory_planner.cpp" afterPath="$PROJECT_DIR$/depth_flight_controller_minimum_snap/src/snap_trajectory_planner.cpp" />
     </list>
@@ -27,8 +26,8 @@
       <file leaf-file-name="snap_trajectory_planner.cpp" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/depth_flight_controller_minimum_snap/src/snap_trajectory_planner.cpp">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="288">
-              <caret line="55" column="5" lean-forward="false" selection-start-line="55" selection-start-column="5" selection-end-line="55" selection-end-column="5" />
+            <state relative-caret-position="324">
+              <caret line="42" column="14" lean-forward="false" selection-start-line="42" selection-start-column="14" selection-end-line="42" selection-end-column="14" />
               <folding />
             </state>
           </provider>
@@ -37,8 +36,8 @@
       <file leaf-file-name="snap_trajectory_planner.h" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/depth_flight_controller_minimum_snap/include/snap_trajectory_planner.h">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="736">
-              <caret line="77" column="28" lean-forward="true" selection-start-line="77" selection-start-column="28" selection-end-line="77" selection-end-column="28" />
+            <state relative-caret-position="304">
+              <caret line="71" column="54" lean-forward="false" selection-start-line="71" selection-start-column="54" selection-end-line="71" selection-end-column="54" />
               <folding />
             </state>
           </provider>
@@ -179,6 +178,12 @@
             <path>
               <item name="semester_project" type="dad4c3:CidrFilesViewHelper$MyProjectTreeStructure$1" />
               <item name="semester_project" type="462c0819:PsiDirectoryNode" />
+              <item name="depth_flight_controller_dubins_path" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="semester_project" type="dad4c3:CidrFilesViewHelper$MyProjectTreeStructure$1" />
+              <item name="semester_project" type="462c0819:PsiDirectoryNode" />
               <item name="depth_flight_controller_minimum_snap" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
@@ -245,12 +250,12 @@
       <option name="presentableId" value="Default" />
       <updated>1513344453340</updated>
       <workItem from="1513344454482" duration="37030000" />
-      <workItem from="1513385607699" duration="1472000" />
+      <workItem from="1513385607699" duration="2982000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="38502000" />
+    <option name="totallyTimeSpent" value="40012000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="63" y="27" width="1920" height="1173" extended-state="7" />
@@ -431,18 +436,26 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/depth_flight_controller_dubins_path/src/desired_state_publisher.cpp">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/depth_flight_controller_minimum_snap/include/snap_trajectory_planner.h">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="736">
-          <caret line="77" column="28" lean-forward="true" selection-start-line="77" selection-start-column="28" selection-end-line="77" selection-end-column="28" />
+        <state relative-caret-position="304">
+          <caret line="71" column="54" lean-forward="false" selection-start-line="71" selection-start-column="54" selection-end-line="71" selection-end-column="54" />
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/depth_flight_controller_minimum_snap/src/snap_trajectory_planner.cpp">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="288">
-          <caret line="55" column="5" lean-forward="false" selection-start-line="55" selection-start-column="5" selection-end-line="55" selection-end-column="5" />
+        <state relative-caret-position="324">
+          <caret line="42" column="14" lean-forward="false" selection-start-line="42" selection-start-column="14" selection-end-line="42" selection-end-column="14" />
           <folding />
         </state>
       </provider>

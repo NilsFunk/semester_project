@@ -61,8 +61,6 @@ namespace depth_flight_controller
     private:
         QuadState state_estimate_;
         QuadState state_estimate_original_;
-        double controller_frequency_;
-        double sample_switch_frequency_;
 
         bool generate_new_path_;
         bool is_new_path_;
@@ -71,6 +69,7 @@ namespace depth_flight_controller
         bool do_initialize_;
 
         std::vector<quad_msgs::QuadDesiredState> path_;
+        std::vector<quad_msgs::QuadDesiredState> curr_path_;
         quad_msgs::QuadDesiredState curr_state_;
 
         double abs_vel_;

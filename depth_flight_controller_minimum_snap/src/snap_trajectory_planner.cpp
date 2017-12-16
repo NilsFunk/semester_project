@@ -15,7 +15,7 @@ namespace depth_flight_controller {
 
         abs_vel_ = 2.0;
 
-        main_loop_timer_ = nh_.createTimer(ros::Duration(1.0 / sample_switch_frequency_), &SnapTrajectoryPlanner::mainloop, this);
+        main_loop_timer_ = nh_.createTimer(ros::Duration(1.0 / 50), &SnapTrajectoryPlanner::mainloop, this);
 
         most_recent_path_generation_ = ros::Time::now();
     }
@@ -27,8 +27,6 @@ namespace depth_flight_controller {
 
     void SnapTrajectoryPlanner::mainloop(const ros::TimerEvent& time)
     {
-        /*
-        std::cout << "check 13" << std::endl;
         if (path_.size() > 0)
         {
             quad_msgs::QuadDesiredState desired_state;
@@ -42,17 +40,14 @@ namespace depth_flight_controller {
             desired_state.header.stamp = ros::Time::now();
             desired_state_pub_.publish(desired_state);
             path_.erase(path_.begin());
+            //curr_path_ = path_;
             curr_state_ = desired_state;
         }
-        std::cout << "check 14" << std::endl;
-         */
     }
 
     void SnapTrajectoryPlanner::pathCallback(const depth_flight_controller_msgs::Target &msg)
     {
-
         if (msg.valid == true && ros::Time::now() - most_recent_path_generation_ > ros::Duration(2) && is_state_estimate_init_ == true) {
-            std::cout << "check 01" << std::endl;
             double state_x_pos = state_estimate_.position(0);
             double state_y_pos = state_estimate_.position(1);
 
@@ -83,8 +78,6 @@ namespace depth_flight_controller {
                     -1 * (target_x_pos - state_x_pos) * sin(state_yaw) + (target_y_pos - state_y_pos) * cos(state_yaw);
             double state_target_yaw = atan(state_target_Y / state_target_depth);
 
-            std::cout << "check 02" << std::endl;
-
             double target_yaw = state_yaw + state_target_yaw;
 
             double target_x_vel = abs_vel_ * cos(target_yaw);
@@ -97,9 +90,6 @@ namespace depth_flight_controller {
             const int dimension = 4;
             const int derivative_to_optimize = mav_trajectory_generation::derivative_order::SNAP;
             mav_trajectory_generation::Vertex start(dimension), middle(dimension), end(dimension);
-
-            std::cout << "check 03" << std::endl;
-
 
             /*
             if (curr_path_.size() > 2)
@@ -130,10 +120,6 @@ namespace depth_flight_controller {
             Eigen::Vector4d start_vel(state_estimate_.velocity(0), state_estimate_.velocity(1), state_estimate_.velocity(2), curr_state_.yaw_rate);
             */
 
-
-
-            std::cout << "check 04" << std::endl;
-
             Eigen::Vector4d start_pos(curr_state_.position.x, curr_state_.position.y, curr_state_.position.z,
                                       curr_state_.yaw);
             Eigen::Vector4d start_vel(curr_state_.velocity.x, curr_state_.velocity.y, curr_state_.velocity.z,
@@ -158,20 +144,11 @@ namespace depth_flight_controller {
             vertices.push_back(start);
 
 
-            std::cout << "check 05" << std::endl;
-            /*
             if (img_obstacle_depth < 2 || img_target_depth / img_obstacle_depth > 1.5) {
                 Eigen::Vector4d obstacle_pos(obstacle_x_pos, obstacle_y_pos, 1.6, target_yaw);
                 middle.addConstraint(mav_trajectory_generation::derivative_order::POSITION, obstacle_pos);
                 vertices.push_back(middle);
             }
-             */
-
-
-
-
-
-            std::cout << "check 06" << std::endl;
 
             Eigen::Vector4d target_pos(target_x_pos, target_y_pos, 1.6, target_yaw);
             Eigen::Vector4d target_vel(target_x_vel, target_y_vel, 0, 0);
@@ -180,10 +157,6 @@ namespace depth_flight_controller {
             end.addConstraint(mav_trajectory_generation::derivative_order::VELOCITY, target_vel);
             vertices.push_back(end);
 
-            std::cout << "check 07" << std::endl;
-
-        }
-            /*
             // Determine segments
             std::vector<double> segment_times;
             const double v_max = 2.0;
@@ -197,14 +170,11 @@ namespace depth_flight_controller {
             opt.setupFromVertices(vertices, segment_times, derivative_to_optimize);
             opt.solveLinear();
 
-            std::cout << "check 08" << std::endl;
-
             mav_trajectory_generation::Trajectory trajectory;
             opt.getTrajectory(&trajectory);
 
             mav_msgs::EigenTrajectoryPoint state;
             mav_msgs::EigenTrajectoryPoint::Vector states;
-            */
 
             // Different way to get trajectory samples
             /*
@@ -212,10 +182,6 @@ namespace depth_flight_controller {
             double sampling_interval = 0.02;
             bool success = mav_trajectory_generation::sampleWholeTrajectory(trajectory, sampling_interval, &states);
             */
-
-            /*
-
-            std::cout << "check 09" << std::endl;
 
             // Sample range:
             int int_pos = mav_trajectory_generation::derivative_order::POSITION;
@@ -233,8 +199,6 @@ namespace depth_flight_controller {
             std::vector <Eigen::VectorXd> snap;
             std::vector<double> sampling_times;
 
-            std::cout << "check 10" << std::endl;
-
             trajectory.evaluateRange(t_start, t_end, dt, int_pos, &position, &sampling_times);
             trajectory.evaluateRange(t_start, t_end, dt, int_vel, &velocity, &sampling_times);
             trajectory.evaluateRange(t_start, t_end, dt, int_acc, &acceleration, &sampling_times);
@@ -243,8 +207,6 @@ namespace depth_flight_controller {
 
             std::vector <quad_msgs::QuadDesiredState> path;
             int number_samples = position.size();
-
-            std::cout << "check 11" << std::endl;
 
             depth_flight_controller_msgs::PathPositions path_positions_msg;
             int every_n_path_position = 0;
@@ -290,8 +252,6 @@ namespace depth_flight_controller {
                 jerk.erase(jerk.begin());
                 snap.erase(snap.begin());
 
-                std::cout << "check 12" << std::endl;
-
                 if (every_n_path_position == 0)
                 {
                     path_position_msg.x_pos = (desired_pos(0)-curr_state_.position.x)*cos(state_yaw) + (desired_pos(1)-curr_state_.position.y) * sin(state_yaw);
@@ -306,8 +266,6 @@ namespace depth_flight_controller {
                     every_n_path_position = 0;
                 }
 
-                std::cout << "check 13" << std::endl;
-
                 path.push_back(desired_state);
             }
 
@@ -318,16 +276,14 @@ namespace depth_flight_controller {
             double end_Time = endTime.toSec();
             double start_Time = startTime.toSec();
 
-            int number_delted_samples = int((end_Time-start_Time)/0.02);
-
-            //std::cout << number_delted_samples << std::endl;
+            int number_delted_samples = int((end_Time-start_Time)/0.02) + 2;
 
             path.erase(path.begin(),path.begin()+number_delted_samples);
             path_.clear();
             path_ = path;
 
             is_new_path_ = true;
-        }*/
+        }
     }
 
 
