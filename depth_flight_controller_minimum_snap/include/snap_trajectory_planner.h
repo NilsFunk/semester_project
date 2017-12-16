@@ -71,7 +71,6 @@ namespace depth_flight_controller
         bool do_initialize_;
 
         std::vector<quad_msgs::QuadDesiredState> path_;
-        //std::vector<quad_msgs::QuadDesiredState> curr_path_;
         quad_msgs::QuadDesiredState curr_state_;
 
         double abs_vel_;

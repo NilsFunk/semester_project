@@ -16,8 +16,8 @@ namespace depth_flight_controller {
         abs_vel_ = 2.0;
 
         main_loop_timer_ = nh_.createTimer(ros::Duration(1.0 / sample_switch_frequency_), &SnapTrajectoryPlanner::mainloop, this);
+
         most_recent_path_generation_ = ros::Time::now();
-        std::cout << "check 00" << std::endl;
     }
 
     SnapTrajectoryPlanner::~SnapTrajectoryPlanner()
@@ -27,6 +27,7 @@ namespace depth_flight_controller {
 
     void SnapTrajectoryPlanner::mainloop(const ros::TimerEvent& time)
     {
+        /*
         std::cout << "check 13" << std::endl;
         if (path_.size() > 0)
         {
@@ -42,15 +43,15 @@ namespace depth_flight_controller {
             desired_state_pub_.publish(desired_state);
             path_.erase(path_.begin());
             curr_state_ = desired_state;
-            //curr_path_ = path_;
         }
         std::cout << "check 14" << std::endl;
+         */
     }
 
     void SnapTrajectoryPlanner::pathCallback(const depth_flight_controller_msgs::Target &msg)
     {
-        if (msg.valid == true && ros::Time::now() - most_recent_path_generation_ > ros::Duration(2) && is_state_estimate_init_ == true)
-        {
+
+        if (msg.valid == true && ros::Time::now() - most_recent_path_generation_ > ros::Duration(2) && is_state_estimate_init_ == true) {
             std::cout << "check 01" << std::endl;
             double state_x_pos = state_estimate_.position(0);
             double state_y_pos = state_estimate_.position(1);
@@ -64,24 +65,30 @@ namespace depth_flight_controller {
             double img_obstacle_Y = msg.obstacle_Y;
             double state_side;
 
-            double target_x_pos = img_state_x_pos + img_target_depth * cos(img_state_yaw) - img_target_Y * sin(img_state_yaw);
-            double target_y_pos = img_state_y_pos + img_target_depth * sin(img_state_yaw) + img_target_Y * cos(img_state_yaw);
+            double target_x_pos =
+                    img_state_x_pos + img_target_depth * cos(img_state_yaw) - img_target_Y * sin(img_state_yaw);
+            double target_y_pos =
+                    img_state_y_pos + img_target_depth * sin(img_state_yaw) + img_target_Y * cos(img_state_yaw);
 
-            double obstacle_x_pos = img_state_x_pos + img_obstacle_depth * cos(img_state_yaw) - img_obstacle_Y * sin(img_state_yaw);
-            double obstacle_y_pos = img_state_y_pos + img_obstacle_depth * sin(img_state_yaw) + img_obstacle_Y * cos(img_state_yaw);
+            double obstacle_x_pos =
+                    img_state_x_pos + img_obstacle_depth * cos(img_state_yaw) - img_obstacle_Y * sin(img_state_yaw);
+            double obstacle_y_pos =
+                    img_state_y_pos + img_obstacle_depth * sin(img_state_yaw) + img_obstacle_Y * cos(img_state_yaw);
 
             double state_yaw = QuaterniondToYaw(state_estimate_.orientation);
 
-            double state_target_depth    = (target_x_pos - state_x_pos) * cos(state_yaw) + (target_y_pos - state_y_pos) * sin(state_yaw);
-            double state_target_Y        = -1*(target_x_pos - state_x_pos) * sin(state_yaw) + (target_y_pos - state_y_pos) * cos(state_yaw);
-            double state_target_yaw = atan(state_target_Y/state_target_depth);
+            double state_target_depth =
+                    (target_x_pos - state_x_pos) * cos(state_yaw) + (target_y_pos - state_y_pos) * sin(state_yaw);
+            double state_target_Y =
+                    -1 * (target_x_pos - state_x_pos) * sin(state_yaw) + (target_y_pos - state_y_pos) * cos(state_yaw);
+            double state_target_yaw = atan(state_target_Y / state_target_depth);
 
             std::cout << "check 02" << std::endl;
 
             double target_yaw = state_yaw + state_target_yaw;
 
-            double target_x_vel = abs_vel_*cos(target_yaw);
-            double target_y_vel = abs_vel_*sin(target_yaw);
+            double target_x_vel = abs_vel_ * cos(target_yaw);
+            double target_y_vel = abs_vel_ * sin(target_yaw);
 
             ros::Time startTime = ros::Time::now();
             most_recent_path_generation_ = ros::Time::now();
@@ -93,6 +100,7 @@ namespace depth_flight_controller {
 
             std::cout << "check 03" << std::endl;
 
+
             /*
             if (curr_path_.size() > 2)
             {
@@ -101,8 +109,8 @@ namespace depth_flight_controller {
             }
             */
 
-            if (do_initialize_ == true)
-            {
+
+            if (do_initialize_ == true) {
                 curr_state_.position.x = state_estimate_.position(0);
                 curr_state_.position.y = state_estimate_.position(1);
                 curr_state_.position.z = state_estimate_.position(2);
@@ -110,8 +118,11 @@ namespace depth_flight_controller {
                 do_initialize_ == false;
             }
 
-            std::cout << "Distance x-direction while path planning - state - desired: " << (state_estimate_.position(0)-curr_state_.position.x) << std::endl;
-            std::cout << "Distance y-direction while path planning - state - desired: " << (state_estimate_.position(1)-curr_state_.position.y) << std::endl;
+            std::cout << "Distance x-direction while path planning - state - desired: "
+                      << (state_estimate_.position(0) - curr_state_.position.x) << std::endl;
+            std::cout << "Distance y-direction while path planning - state - desired: "
+                      << (state_estimate_.position(1) - curr_state_.position.y) << std::endl;
+
 
             // Optional define start of curve as current position
             /*
@@ -119,11 +130,16 @@ namespace depth_flight_controller {
             Eigen::Vector4d start_vel(state_estimate_.velocity(0), state_estimate_.velocity(1), state_estimate_.velocity(2), curr_state_.yaw_rate);
             */
 
+
+
             std::cout << "check 04" << std::endl;
 
-            Eigen::Vector4d start_pos(curr_state_.position.x, curr_state_.position.y, curr_state_.position.z, curr_state_.yaw);
-            Eigen::Vector4d start_vel(curr_state_.velocity.x, curr_state_.velocity.y, curr_state_.velocity.z, curr_state_.yaw_rate);
-            Eigen::Vector4d start_acc(curr_state_.acceleration.x, curr_state_.acceleration.y, curr_state_.acceleration.z, curr_state_.yaw_acceleration);
+            Eigen::Vector4d start_pos(curr_state_.position.x, curr_state_.position.y, curr_state_.position.z,
+                                      curr_state_.yaw);
+            Eigen::Vector4d start_vel(curr_state_.velocity.x, curr_state_.velocity.y, curr_state_.velocity.z,
+                                      curr_state_.yaw_rate);
+            Eigen::Vector4d start_acc(curr_state_.acceleration.x, curr_state_.acceleration.y,
+                                      curr_state_.acceleration.z, curr_state_.yaw_acceleration);
             Eigen::Vector4d start_jerk(curr_state_.jerk.x, curr_state_.jerk.y, curr_state_.jerk.z, 0);
             Eigen::Vector4d start_snap(curr_state_.snap.x, curr_state_.snap.y, curr_state_.snap.z, 0);
 
@@ -141,14 +157,19 @@ namespace depth_flight_controller {
             start.addConstraint(mav_trajectory_generation::derivative_order::SNAP, start_snap);
             vertices.push_back(start);
 
-            std::cout << "check 05" << std::endl;
 
-            if (img_obstacle_depth < 2 || img_target_depth/img_obstacle_depth > 1.5)
-            {
+            std::cout << "check 05" << std::endl;
+            /*
+            if (img_obstacle_depth < 2 || img_target_depth / img_obstacle_depth > 1.5) {
                 Eigen::Vector4d obstacle_pos(obstacle_x_pos, obstacle_y_pos, 1.6, target_yaw);
                 middle.addConstraint(mav_trajectory_generation::derivative_order::POSITION, obstacle_pos);
                 vertices.push_back(middle);
             }
+             */
+
+
+
+
 
             std::cout << "check 06" << std::endl;
 
@@ -161,6 +182,8 @@ namespace depth_flight_controller {
 
             std::cout << "check 07" << std::endl;
 
+        }
+            /*
             // Determine segments
             std::vector<double> segment_times;
             const double v_max = 2.0;
@@ -181,6 +204,7 @@ namespace depth_flight_controller {
 
             mav_msgs::EigenTrajectoryPoint state;
             mav_msgs::EigenTrajectoryPoint::Vector states;
+            */
 
             // Different way to get trajectory samples
             /*
@@ -188,6 +212,8 @@ namespace depth_flight_controller {
             double sampling_interval = 0.02;
             bool success = mav_trajectory_generation::sampleWholeTrajectory(trajectory, sampling_interval, &states);
             */
+
+            /*
 
             std::cout << "check 09" << std::endl;
 
@@ -301,7 +327,7 @@ namespace depth_flight_controller {
             path_ = path;
 
             is_new_path_ = true;
-        }
+        }*/
     }
 
 

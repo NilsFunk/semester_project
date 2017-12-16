@@ -10,115 +10,9 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="44bd4eb1-2d47-455e-bf90-4941153ae387" name="Default" comment="">
-      <change type="DELETED" beforePath="$PROJECT_DIR$/depth_flight_controller/.idea/depth_flight_controller.iml" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/depth_flight_controller/.idea/misc.xml" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/depth_flight_controller/.idea/modules.xml" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/depth_flight_controller/.idea/workspace.xml" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/depth_flight_controller/Backup/desired_state_publisher_backup.cpp" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/depth_flight_controller/Backup/desired_state_publisher_backup_13_12.cpp" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/depth_flight_controller/Backup/horizon_plotter_backup.cpp" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/depth_flight_controller/Backup/path_planner_backup.cpp" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/depth_flight_controller/CMakeLists.txt" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/depth_flight_controller/cmake-build-debug/CMakeCache.txt" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/depth_flight_controller/cmake-build-debug/CMakeFiles/3.8.2/CMakeCCompiler.cmake" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/depth_flight_controller/cmake-build-debug/CMakeFiles/3.8.2/CMakeCXXCompiler.cmake" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/depth_flight_controller/cmake-build-debug/CMakeFiles/3.8.2/CMakeDetermineCompilerABI_C.bin" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/depth_flight_controller/cmake-build-debug/CMakeFiles/3.8.2/CMakeDetermineCompilerABI_CXX.bin" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/depth_flight_controller/cmake-build-debug/CMakeFiles/3.8.2/CMakeSystem.cmake" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/depth_flight_controller/cmake-build-debug/CMakeFiles/3.8.2/CompilerIdC/CMakeCCompilerId.c" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/depth_flight_controller/cmake-build-debug/CMakeFiles/3.8.2/CompilerIdC/a.out" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/depth_flight_controller/cmake-build-debug/CMakeFiles/3.8.2/CompilerIdCXX/CMakeCXXCompilerId.cpp" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/depth_flight_controller/cmake-build-debug/CMakeFiles/3.8.2/CompilerIdCXX/a.out" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/depth_flight_controller/cmake-build-debug/CMakeFiles/CMakeOutput.log" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/depth_flight_controller/cmake-build-debug/CMakeFiles/clion-environment.txt" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/depth_flight_controller/cmake-build-debug/CMakeFiles/clion-log.txt" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/depth_flight_controller/cmake-build-debug/CMakeFiles/cmake.check_cache" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/depth_flight_controller/cmake-build-debug/CMakeFiles/feature_tests.bin" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/depth_flight_controller/cmake-build-debug/CMakeFiles/feature_tests.c" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/depth_flight_controller/cmake-build-debug/CMakeFiles/feature_tests.cxx" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/depth_flight_controller/include/c_space_expander.h" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/depth_flight_controller/include/cmd_vel_transformer.h" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/depth_flight_controller/include/desired_state_publisher.h" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/depth_flight_controller/include/horizon_plotter.h" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/depth_flight_controller/include/image_clipper.h" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/depth_flight_controller/include/image_prep.h" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/depth_flight_controller/include/max_depth_finder.h" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/depth_flight_controller/include/path_planner.h" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/depth_flight_controller/include/snap_trajectory_planner.h" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/depth_flight_controller/include/target_finder.h" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/depth_flight_controller/launch/depth_flight_controller_close_loop_launch.launch" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/depth_flight_controller/launch/depth_flight_controller_launch.launch" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/depth_flight_controller/msgs/HorizonPoints.msg" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/depth_flight_controller/original_img.txt" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/depth_flight_controller/package.xml" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/depth_flight_controller/src/c_space_expander.cpp" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/depth_flight_controller/src/cmd_vel_transformer.cpp" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/depth_flight_controller/src/desired_state_publisher.cpp" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/depth_flight_controller/src/find_max_depth.cpp" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/depth_flight_controller/src/horizon_plotter.cpp" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/depth_flight_controller/src/image_clipper.cpp" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/depth_flight_controller/src/image_prep.cpp" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/depth_flight_controller/src/max_depth_finder.cpp" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/depth_flight_controller/src/path_planner.cpp" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/depth_flight_controller/src/sample_path.txt" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/depth_flight_controller/src/snap_trajectory_planner.cpp" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/depth_flight_controller/src/target_finder.cpp" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/depth_flight_controller/src/trajectory_planner.cpp" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/depth_flight_controller_p_control/Backup/desired_state_publisher_backup.cpp" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/depth_flight_controller_p_control/Backup/desired_state_publisher_backup_13_12.cpp" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/depth_flight_controller_p_control/Backup/horizon_plotter_backup.cpp" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/depth_flight_controller_p_control/Backup/path_planner_backup.cpp" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/depth_flight_controller_p_control/include/c_space_expander.h" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/depth_flight_controller_p_control/include/cmd_vel_transformer.h" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/depth_flight_controller_p_control/include/desired_state_publisher.h" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/depth_flight_controller_p_control/include/image_clipper.h" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/depth_flight_controller_p_control/include/image_prep.h" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/depth_flight_controller_p_control/include/path_planner.h" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/depth_flight_controller_p_control/include/snap_trajectory_planner.h" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/depth_flight_controller_p_control/include/target_finder.h" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/depth_flight_controller_p_control/src/c_space_expander.cpp" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/depth_flight_controller_p_control/src/cmd_vel_transformer.cpp" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/depth_flight_controller_p_control/src/desired_state_publisher.cpp" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/depth_flight_controller_p_control/src/find_max_depth.cpp" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/depth_flight_controller_p_control/src/image_clipper.cpp" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/depth_flight_controller_p_control/src/image_prep.cpp" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/depth_flight_controller_p_control/src/path_planner.cpp" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/depth_flight_controller_p_control/src/snap_trajectory_planner.cpp" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/depth_flight_controller_p_control/src/target_finder.cpp" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/depth_flight_controller_p_control/src/trajectory_planner.cpp" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/rqt_image_view/CHANGELOG.rst" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/rqt_image_view/CMakeLists.txt" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/rqt_image_view/include/rqt_image_view/image_view.h" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/rqt_image_view/include/rqt_image_view/ratio_layouted_frame.h" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/rqt_image_view/mainpage.dox" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/rqt_image_view/package.xml" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/rqt_image_view/plugin.xml" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/rqt_image_view/scripts/rqt_image_view" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/rqt_image_view/setup.py" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/rqt_image_view/src/rqt_image_view/image_view (copy).ui" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/rqt_image_view/src/rqt_image_view/image_view.cpp" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/rqt_image_view/src/rqt_image_view/image_view.ui" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/rqt_image_view/src/rqt_image_view/ratio_layouted_frame.cpp" afterPath="" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/depth_flight_controller_common/CMakeLists.txt" afterPath="$PROJECT_DIR$/depth_flight_controller_common/CMakeLists.txt" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/depth_flight_controller_common/include/c_space_expander_horizon.h" afterPath="$PROJECT_DIR$/depth_flight_controller_common/include/c_space_expander_horizon.h" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/depth_flight_controller_common/include/image_prep.h" afterPath="$PROJECT_DIR$/depth_flight_controller_common/include/image_prep.h" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/depth_flight_controller_common/src/body_cmd_vel_publisher.cpp" afterPath="$PROJECT_DIR$/depth_flight_controller_common/src/body_cmd_vel_publisher.cpp" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/depth_flight_controller_common/src/c_space_expander.cpp" afterPath="$PROJECT_DIR$/depth_flight_controller_common/src/c_space_expander.cpp" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/depth_flight_controller_common/src/c_space_expander_horizon.cpp" afterPath="$PROJECT_DIR$/depth_flight_controller_common/src/c_space_expander_horizon.cpp" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/depth_flight_controller_common/src/cmd_vel_transformer.cpp" afterPath="$PROJECT_DIR$/depth_flight_controller_common/src/cmd_vel_transformer.cpp" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/depth_flight_controller_common/src/image_prep.cpp" afterPath="$PROJECT_DIR$/depth_flight_controller_common/src/image_prep.cpp" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/depth_flight_controller_minimum_snap/include/snap_trajectory_planner.h" afterPath="$PROJECT_DIR$/depth_flight_controller_minimum_snap/include/snap_trajectory_planner.h" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/depth_flight_controller_minimum_snap/launch/depth_flight_controller_minimum_snap_horizon.launch" afterPath="$PROJECT_DIR$/depth_flight_controller_minimum_snap/launch/depth_flight_controller_minimum_snap_horizon.launch" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/depth_flight_controller_minimum_snap/src/snap_trajectory_planner.cpp" afterPath="$PROJECT_DIR$/depth_flight_controller_minimum_snap/src/snap_trajectory_planner.cpp" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/depth_flight_controller_minimum_snap/src/target_finder.cpp" afterPath="$PROJECT_DIR$/depth_flight_controller_minimum_snap/src/target_finder.cpp" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/depth_flight_controller_msgs/CMakeLists.txt" afterPath="$PROJECT_DIR$/depth_flight_controller_msgs/CMakeLists.txt" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/depth_flight_controller_msgs/msg/PathPosition.msg" afterPath="$PROJECT_DIR$/depth_flight_controller_msgs/msg/PathPosition.msg" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/depth_flight_controller_msgs/msg/PathPositions.msg" afterPath="$PROJECT_DIR$/depth_flight_controller_msgs/msg/PathPositions.msg" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/depth_flight_controller_msgs/msg/Target.msg" afterPath="$PROJECT_DIR$/depth_flight_controller_msgs/msg/Target.msg" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/depth_flight_controller_msgs/package.xml" afterPath="$PROJECT_DIR$/depth_flight_controller_msgs/package.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/depth_flight_controller_p_control/CMakeLists.txt" afterPath="$PROJECT_DIR$/depth_flight_controller_p_control/CMakeLists.txt" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/depth_flight_controller_p_control/package.xml" afterPath="$PROJECT_DIR$/depth_flight_controller_p_control/package.xml" />
     </list>
     <ignored path="$PROJECT_DIR$/cmake-build-debug/" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -129,12 +23,12 @@
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
   <component name="FileEditorManager">
-    <leaf>
+    <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
       <file leaf-file-name="snap_trajectory_planner.cpp" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/depth_flight_controller_minimum_snap/src/snap_trajectory_planner.cpp">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="342">
-              <caret line="19" column="30" lean-forward="false" selection-start-line="19" selection-start-column="30" selection-end-line="19" selection-end-column="30" />
+            <state relative-caret-position="288">
+              <caret line="55" column="5" lean-forward="false" selection-start-line="55" selection-start-column="5" selection-end-line="55" selection-end-column="5" />
               <folding />
             </state>
           </provider>
@@ -143,8 +37,8 @@
       <file leaf-file-name="snap_trajectory_planner.h" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/depth_flight_controller_minimum_snap/include/snap_trajectory_planner.h">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="686">
-              <caret line="76" column="14" lean-forward="false" selection-start-line="76" selection-start-column="14" selection-end-line="76" selection-end-column="24" />
+            <state relative-caret-position="736">
+              <caret line="77" column="28" lean-forward="true" selection-start-line="77" selection-start-column="28" selection-end-line="77" selection-end-column="28" />
               <folding />
             </state>
           </provider>
@@ -221,8 +115,8 @@
         <option value="$PROJECT_DIR$/depth_flight_controller_common/include/image_prep.h" />
         <option value="$PROJECT_DIR$/depth_flight_controller_common/src/image_prep.cpp" />
         <option value="$PROJECT_DIR$/depth_flight_controller_minimum_snap/src/target_finder.cpp" />
-        <option value="$PROJECT_DIR$/depth_flight_controller_minimum_snap/src/snap_trajectory_planner.cpp" />
         <option value="$PROJECT_DIR$/depth_flight_controller_minimum_snap/include/snap_trajectory_planner.h" />
+        <option value="$PROJECT_DIR$/depth_flight_controller_minimum_snap/src/snap_trajectory_planner.cpp" />
       </list>
     </option>
   </component>
@@ -232,7 +126,7 @@
     <detection-done>true</detection-done>
     <sorting>DEFINITION_ORDER</sorting>
   </component>
-  <component name="ProjectFrameBounds" extendedState="6">
+  <component name="ProjectFrameBounds" extendedState="7">
     <option name="x" value="63" />
     <option name="y" value="27" />
     <option name="width" value="1104" />
@@ -350,20 +244,21 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1513344453340</updated>
-      <workItem from="1513344454482" duration="37019000" />
+      <workItem from="1513344454482" duration="37030000" />
+      <workItem from="1513385607699" duration="1472000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="37019000" />
+    <option name="totallyTimeSpent" value="38502000" />
   </component>
   <component name="ToolWindowManager">
-    <frame x="63" y="27" width="1920" height="1173" extended-state="6" />
+    <frame x="63" y="27" width="1920" height="1173" extended-state="7" />
     <editor active="true" />
     <layout>
       <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="combo" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="10" side_tool="false" content_ui="tabs" />
-      <window_info id="CMake" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.3291262" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
+      <window_info id="CMake" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.33300972" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="1" side_tool="true" content_ui="tabs" />
       <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
@@ -373,11 +268,11 @@
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="0" side_tool="true" content_ui="tabs" />
       <window_info id="Data View" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
-      <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="3" side_tool="false" content_ui="combo" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
-      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
       <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="9" side_tool="false" content_ui="tabs" />
+      <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="3" side_tool="false" content_ui="combo" />
+      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
     </layout>
   </component>
@@ -392,19 +287,26 @@
     <watches-manager />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/depth_flight_controller_minimum_snap/launch/depth_flight_controller_minimum_snap_horizon.launch">
+    <entry file="file://$PROJECT_DIR$/depth_flight_controller_minimum_snap/src/snap_trajectory_planner.cpp">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="72">
-          <caret line="4" column="73" lean-forward="false" selection-start-line="4" selection-start-column="73" selection-end-line="4" selection-end-column="73" />
+        <state relative-caret-position="0">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/depth_flight_controller_common/src/cmd_vel_transformer.cpp">
+    <entry file="file://$PROJECT_DIR$/depth_flight_controller_minimum_snap/include/snap_trajectory_planner.h">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1098">
-          <caret line="61" column="46" lean-forward="false" selection-start-line="61" selection-start-column="46" selection-end-line="61" selection-end-column="46" />
+        <state relative-caret-position="1368">
+          <caret line="76" column="14" lean-forward="false" selection-start-line="76" selection-start-column="14" selection-end-line="76" selection-end-column="24" />
           <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/depth_flight_controller_minimum_snap/launch/depth_flight_controller_minimum_snap_horizon.launch">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="72">
+          <caret line="4" column="73" lean-forward="false" selection-start-line="4" selection-start-column="73" selection-end-line="4" selection-end-column="73" />
         </state>
       </provider>
     </entry>
@@ -412,7 +314,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="198">
           <caret line="41" column="89" lean-forward="false" selection-start-line="41" selection-start-column="89" selection-end-line="41" selection-end-column="89" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -420,7 +321,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="522">
           <caret line="35" column="32" lean-forward="true" selection-start-line="35" selection-start-column="32" selection-end-line="35" selection-end-column="32" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -428,7 +328,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
           <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -436,7 +335,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
           <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -444,7 +342,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="162">
           <caret line="9" column="0" lean-forward="true" selection-start-line="9" selection-start-column="0" selection-end-line="9" selection-end-column="0" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -452,7 +349,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="72">
           <caret line="4" column="29" lean-forward="true" selection-start-line="4" selection-start-column="15" selection-end-line="4" selection-end-column="29" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -460,7 +356,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="324">
           <caret line="18" column="19" lean-forward="true" selection-start-line="18" selection-start-column="19" selection-end-line="18" selection-end-column="19" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -468,7 +363,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="491">
           <caret line="84" column="24" lean-forward="false" selection-start-line="84" selection-start-column="22" selection-end-line="84" selection-end-column="24" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -476,7 +370,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="270">
           <caret line="15" column="3" lean-forward="false" selection-start-line="15" selection-start-column="3" selection-end-line="15" selection-end-column="3" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -484,15 +377,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="205">
           <caret line="407" column="19" lean-forward="false" selection-start-line="407" selection-start-column="10" selection-end-line="407" selection-end-column="19" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/depth_flight_controller_common/src/image_clipper.cpp">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="347">
-          <caret line="44" column="19" lean-forward="false" selection-start-line="44" selection-start-column="19" selection-end-line="44" selection-end-column="19" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -500,7 +384,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="205">
           <caret line="144" column="34" lean-forward="false" selection-start-line="144" selection-start-column="31" selection-end-line="144" selection-end-column="34" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -508,7 +391,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="288">
           <caret line="16" column="0" lean-forward="false" selection-start-line="16" selection-start-column="0" selection-end-line="16" selection-end-column="0" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -516,7 +398,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="36">
           <caret line="2" column="32" lean-forward="false" selection-start-line="2" selection-start-column="32" selection-end-line="2" selection-end-column="32" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -524,7 +405,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="205">
           <caret line="162" column="23" lean-forward="false" selection-start-line="162" selection-start-column="18" selection-end-line="162" selection-end-column="23" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -532,22 +412,37 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="205">
           <caret line="208" column="32" lean-forward="false" selection-start-line="208" selection-start-column="27" selection-end-line="208" selection-end-column="32" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/depth_flight_controller_common/src/image_clipper.cpp">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="376">
+          <caret line="44" column="19" lean-forward="false" selection-start-line="44" selection-start-column="19" selection-end-line="44" selection-end-column="19" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/depth_flight_controller_common/src/cmd_vel_transformer.cpp">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="610">
+          <caret line="61" column="46" lean-forward="false" selection-start-line="61" selection-start-column="46" selection-end-line="61" selection-end-column="46" />
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/depth_flight_controller_minimum_snap/include/snap_trajectory_planner.h">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="686">
-          <caret line="76" column="14" lean-forward="false" selection-start-line="76" selection-start-column="14" selection-end-line="76" selection-end-column="24" />
+        <state relative-caret-position="736">
+          <caret line="77" column="28" lean-forward="true" selection-start-line="77" selection-start-column="28" selection-end-line="77" selection-end-column="28" />
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/depth_flight_controller_minimum_snap/src/snap_trajectory_planner.cpp">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="342">
-          <caret line="19" column="30" lean-forward="false" selection-start-line="19" selection-start-column="30" selection-end-line="19" selection-end-column="30" />
+        <state relative-caret-position="288">
+          <caret line="55" column="5" lean-forward="false" selection-start-line="55" selection-start-column="5" selection-end-line="55" selection-end-column="5" />
           <folding />
         </state>
       </provider>
