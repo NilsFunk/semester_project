@@ -9,10 +9,7 @@
     </configurations>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="44bd4eb1-2d47-455e-bf90-4941153ae387" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/depth_flight_controller_minimum_snap/include/snap_trajectory_planner.h" afterPath="$PROJECT_DIR$/depth_flight_controller_minimum_snap/include/snap_trajectory_planner.h" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/depth_flight_controller_minimum_snap/src/snap_trajectory_planner.cpp" afterPath="$PROJECT_DIR$/depth_flight_controller_minimum_snap/src/snap_trajectory_planner.cpp" />
-    </list>
+    <list default="true" id="44bd4eb1-2d47-455e-bf90-4941153ae387" name="Default" comment="" />
     <ignored path="$PROJECT_DIR$/cmake-build-debug/" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="TRACKING_ENABLED" value="true" />
@@ -250,12 +247,12 @@
       <option name="presentableId" value="Default" />
       <updated>1513344453340</updated>
       <workItem from="1513344454482" duration="37030000" />
-      <workItem from="1513385607699" duration="2982000" />
+      <workItem from="1513385607699" duration="3195000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="40012000" />
+    <option name="totallyTimeSpent" value="40225000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="63" y="27" width="1920" height="1173" extended-state="7" />
