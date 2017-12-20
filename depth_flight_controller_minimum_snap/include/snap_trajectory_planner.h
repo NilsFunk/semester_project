@@ -75,8 +75,6 @@ namespace depth_flight_controller
 
         double abs_vel_;
 
-        time_t tstart, tend;
-
         ros::Time most_recent_path_generation_;
     };
 }

@@ -36,8 +36,6 @@ namespace depth_flight_controller
         float roundToPrecision(float val,int precision);
         void changeImagePrecision(cv::Mat& IO, cv::Mat& IR);
         void expandImage(cv::Mat& IO, cv::Mat& IR);
-        void writeMapU(std::ostream& os);
-        void writeMapV(std::ostream& os);
 
     protected:
         ros::NodeHandle nh_;

@@ -18,6 +18,9 @@ catkin_simple()
 cs_install()
 cs_export()
 
+add_executable(desired_state_publisher_yaw_adjustment src/desired_state_publisher_yaw_adjustment.cpp)
+target_link_libraries(desired_state_publisher_yaw_adjustment ${catkin_LIBRARIES})
+
 add_executable(desired_state_publisher src/desired_state_publisher.cpp)
 target_link_libraries(desired_state_publisher ${catkin_LIBRARIES})
 

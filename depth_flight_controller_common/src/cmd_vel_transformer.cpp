@@ -5,8 +5,8 @@ namespace depth_flight_controller {
     {
         cmd_vel_world_frame_pub_ = nh_.advertise<geometry_msgs::TwistStamped>("/hummingbird/copilot/manual_desired_velocity", 1);
         state_estimate_sub_ = nh_.subscribe("/hummingbird/state_estimate", 1, &CmdVelTransformer::stateEstimateCallback, this);
-        cmd_vel_base_frame_sub_ = nh_.subscribe("hummingbird/base_frame_cmd_vel_fixed", 1, &CmdVelTransformer::cmdVelBaseFrameCallback, this);
-        //cmd_vel_base_frame_sub_ = nh_.subscribe("hummingbird/base_frame_cmd_vel", 1, &CmdVelTransformer::cmdVelBaseFrameCallback, this);
+        //cmd_vel_base_frame_sub_ = nh_.subscribe("hummingbird/base_frame_cmd_vel_fixed", 1, &CmdVelTransformer::cmdVelBaseFrameCallback, this);
+        cmd_vel_base_frame_sub_ = nh_.subscribe("hummingbird/base_frame_cmd_vel", 1, &CmdVelTransformer::cmdVelBaseFrameCallback, this);
     }
 
     CmdVelTransformer::~CmdVelTransformer()

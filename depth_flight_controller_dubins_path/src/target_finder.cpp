@@ -39,14 +39,6 @@ namespace depth_flight_controller
         double pitch = -asin(2*q.x()*q.z() - 2*q.w()*q.y());
         yaw_ = atan2(2*q.w()*q.z() + 2*q.x()*q.y(), q.w()*q.w() + q.x()*q.x() - q.y()*q.y() - q.z()*q.z());
 
-        //double roll = 5*2*3.14/360;// 5*2*3.14/360;
-        //double pitch = 5*2*3.14/360;
-        //double yaw = 0;
-
-        //std::cout << "roll: " << roll << std::endl;
-        //std::cout << "pitch: " << pitch << std::endl;
-        //std::cout << "yaw: " << yaw << std::endl;
-
         Eigen::Vector3d euler_angles(roll, pitch, 0);
 
         return euler_angles;
@@ -56,11 +48,8 @@ namespace depth_flight_controller
     {
         Eigen::Quaterniond q = state_estimate.orientation;
         Eigen::Vector3d euler_angles = TargetFinder::toEulerAngle(q);
-        //std::cout << "euler_angles: " << euler_angles << std::endl;
         Eigen::Matrix3d state_estimate_rot_mat = eulerAnglesZYXToRotationMatrix(euler_angles);
-        //std::cout << "rotation_mat: " << state_estimate_rot_mat << std::endl;
         Eigen::Matrix3d state_estimate_rot_mat_inv = state_estimate_rot_mat.inverse();
-        //std::cout << "rotation_mat_inv: " << state_estimate_rot_mat_inv << std::endl;
         return state_estimate_rot_mat;
     }
 
@@ -88,7 +77,6 @@ namespace depth_flight_controller
         std::vector<cv::Point> horizon_points = TargetFinder::buildHorizon(state_estimate_image);
 
         TargetFinder::horizonAnalyze(horizon_points, state_estimate_image_msg);
-
     }
 
     std::vector<cv::Point> TargetFinder::buildHorizon(const QuadState state_estimate)
@@ -99,10 +87,6 @@ namespace depth_flight_controller
         Eigen::Vector3d horizon_center_point_cam = body_cam_rot_ * rvec_state_estimate *horizon_center_point_world_;
         Eigen::Vector3d horizon_left_point_cam = body_cam_rot_ * rvec_state_estimate * horizon_left_point_world_;
         Eigen::Vector3d horizon_right_point_cam = body_cam_rot_ * rvec_state_estimate * horizon_right_point_world_;
-
-        //std::cout << "PEC: " << horizon_center_point_cam << std::endl;
-        //std::cout << "PEL: " << horizon_left_point_cam << std::endl;
-        //std::cout << "PER: " << horizon_right_point_cam << std::endl;
 
         std::vector<cv::Point3f> horizon_3D_points;
         std::vector<cv::Point2f> projected_horizon_points;
@@ -118,10 +102,6 @@ namespace depth_flight_controller
         cv::Point pt1 = cv::Point(projected_horizon_points[0].x,projected_horizon_points[0].y);
         cv::Point pt2 = cv::Point(projected_horizon_points[1].x,projected_horizon_points[1].y);
         cv::Point horizon_center = cv::Point(projected_horizon_points[2].x,projected_horizon_points[2].y);
-
-        //std::cout << "pt1: " << pt1 << std::endl;
-        //std::cout << "pt2: " << pt2 << std::endl;
-        //std::cout << "center: " << horizon_center << std::endl;
 
         std::vector<cv::Point> horizon_points = TargetFinder::fullLine(pt1, pt2, horizon_center);
 
@@ -141,15 +121,8 @@ namespace depth_flight_controller
 
         if (is_max_valid_ == true)
         {
-
-            //std::cout << "edge_left_pos: " << edge_left_pos << std::endl;
-            //std::cout << "edge_right_pos: " << edge_right_pos << std::endl;
-            //std::cout << "center: " << center_pos << std::endl;
-
-
             cv::LineIterator it2(depth_expanded_img_, edge_left_pos, edge_right_pos, 8);
             std::vector<cv::Point> free_space_points;
-            //free_space_points.erase(free_space_points.begin(),free_space_points.end());
 
             double depth_edge_left = depth_expanded_img_.at<float>(edge_left_pos);
             double depth_edge_right = depth_expanded_img_.at<float>(edge_right_pos);
@@ -286,6 +259,7 @@ namespace depth_flight_controller
         target.depth = max_depth;
         target.Y = target_dist_center / 151.18 * max_depth;
 
+        /*
         std::cout << "max depth pos: " << max_depth_pos << std::endl;
         std::cout << "max depth : " << max_depth << std::endl;
         std::cout << "center pos: " << center_pos << std::endl;
@@ -295,6 +269,7 @@ namespace depth_flight_controller
         std::cout << "target_dist_center: " << target_dist_center << std::endl;
         std::cout << "targt angle: " << target_angle << std::endl;
         std::cout << "target_Y: " << target.Y << std::endl;
+*/
 
         if (target_angle == 0)
         {
@@ -316,7 +291,6 @@ namespace depth_flight_controller
 
         Eigen::Vector3d eig_left(edge_left_pos.x, edge_left_pos.y,0);
         Eigen::Vector3d eig_right(edge_right_pos.x, edge_right_pos.y,0);
-        //Eigen::Vector3d eig_right(edge_right_pos.x, edge_right_pos.y,0);
         Eigen::Vector3d eig_center(center_pos.x,center_pos.y,0);
         Eigen::Vector3d eig_max_depth(max_depth_pos.x, max_depth_pos.y,0);
         Eigen::Vector3d eig_min_depth_left(min_depth_left_pos.x, min_depth_left_pos.y,0);
@@ -399,10 +373,6 @@ namespace depth_flight_controller
 
             is_max_valid_ = false;
         }
-
-        //std::cout << "pt1 update: " << edge_left_pos << std::endl;
-        //std::cout << "pt2 update: " << edge_right_pos << std::endl;
-        //std::cout << "center update: " << center_pos << std::endl;
 
         std::vector<cv::Point> horizon_points;
         horizon_points.push_back(edge_left_pos);

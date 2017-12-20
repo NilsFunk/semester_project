@@ -65,9 +65,7 @@ namespace depth_flight_controller
         double controller_frequency_;
         double sample_switch_frequency_;
 
-        bool generate_new_path_;
         bool is_new_path;
-        bool is_starting_;
         bool is_trajectory_valid_;
 
         std::vector<quad_msgs::QuadDesiredState> path_;

@@ -94,25 +94,6 @@ namespace depth_flight_controller
         // Horizon analysis information
         bool is_max_valid_;
         double yaw_;
-
-
-        //cv::Point target_;
-        //cv::Point obstacle_;
-
-        /*float min_depth_left_, min_depth_right_, depth_edge_left_, depth_edge_right_, min_depth_ib_, max_depth_;
-        float obstacle_depth_;
-        double depth_center_;
-        float max_dist_center_ib_min_;
-        float max_dist_center_left_min_;
-        float max_dist_center_right_min_;
-        float min_dist_center_max_;
-        static const int kernel_size = 3;
-        static const int kernel_middle = (kernel_size+1)/2;*/
-
-        //bool close_to_wall_;
-
-
-        
     };
 }
 

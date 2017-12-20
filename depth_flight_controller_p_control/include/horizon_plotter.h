@@ -49,8 +49,8 @@ namespace depth_flight_controller
         float euclideanDistSign(cv::Point& p, cv::Point& q);
         float euclideanDist(cv::Point& p, cv::Point& q);
         int leftOfSecArg(cv::Point& p, cv::Point& q);
-        void cmdVelPlotter();
-        void cmdVelPlotter2(const int &max_depth, const cv::Point &max_depth_pos, cv::Point &horizon_center_pos, const QuadState &state_estimate);
+        //void cmdVelPlotter();
+        void cmdVelPlotter(const int &max_depth, const cv::Point &max_depth_pos, cv::Point &horizon_center_pos, const QuadState &state_estimate);
         void horizonAnalyze();
         void buildHorizon();
         void plotHorizonPoints();
@@ -109,7 +109,7 @@ namespace depth_flight_controller
         float max_dist_center_left_min_;
         float max_dist_center_right_min_;
         float min_dist_center_max_;
-        static const int kernel_size = 3;
+        static const int kernel_size = 9;
         static const int kernel_middle = (kernel_size+1)/2;
 
         bool close_to_wall_;

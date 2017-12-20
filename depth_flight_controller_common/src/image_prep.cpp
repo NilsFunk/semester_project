@@ -21,7 +21,6 @@ namespace depth_flight_controller
 
     void ImagePrep::pathCallback(const depth_flight_controller_msgs::PathPositions& msg)
     {
-        //int number_pos_path = sizeof(msg.path_positions)/sizeof(msg.path_positions.at(0));
         int number_path_pos_ = msg.path_positions.size();
         path_x_pos_.clear();
         path_y_pos_.clear();
@@ -88,6 +87,7 @@ namespace depth_flight_controller
         std::vector<float> path_x_pos = path_x_pos_;
         std::vector<float> path_y_pos = path_y_pos_;
 
+        // Draw minimum snap trajectory
         if (path_x_pos.size()>0)
         {
             int number_sampels = path_x_pos.size();
@@ -114,8 +114,6 @@ namespace depth_flight_controller
         cv::circle(depth_horizon_img_, min_depth_left_pos_, 3, CV_RGB(100,100,0));
         cv::circle(depth_horizon_img_, min_depth_right_pos_, 3, CV_RGB(0,100,100));
         cv::circle(depth_horizon_img_, min_depth_ib_pos_, 3, CV_RGB(100,0,100));
-        //cv::circle(depth_original_top_img, cv::Point(265,500), 30, CV_RGB(255,0,0));
-        //cv::circle(depth_expanded_top_img, cv::Point(265,500), 2, CV_RGB(255,0,0));
 
         int original_fov_right = int(-2*80 +265);
         cv::Point original_fov_right_pt = cv::Point(original_fov_right, 500-2*151.8);
@@ -130,9 +128,6 @@ namespace depth_flight_controller
         line(depth_original_top_img,cv::Point(265,500),original_fov_left_pt,100,1,8,0);
         line(depth_expanded_top_img,cv::Point(265,500),expanded_fov_right_pt,100,1,8,0);
         line(depth_expanded_top_img,cv::Point(265,500),expanded_fov_left_pt,100,1,8,0);
-
-        //cv::circle(depth_expanded_top_img, cv::Point(265+25,500-47), 3, CV_RGB(255,0,0));
-        //cv::circle(depth_expanded_top_img, cv::Point(265-25,500-47), 3, CV_RGB(255,0,0));
 
         cv_horizon.header.stamp = ros::Time::now();
         cv_horizon.header.frame_id = "horizon_view_image";

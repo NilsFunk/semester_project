@@ -7,15 +7,16 @@ namespace depth_flight_controller {
 
     DesiredStatePublisher::DesiredStatePublisher()
     {
-        //is_starting_ = true;
-        generate_new_path_ = true;
         state_estimate_sub_ = nh_.subscribe("/hummingbird/state_estimate", 1, &DesiredStatePublisher::stateEstimateCallback, this);
-        //state_estimate_original_sub_ = nh_.subscribe("/hummingbird/state_estimate_original_img", 1, &DesiredStatePublisher::stateEstimateOriginalCallback, this);
         target_sub_ = nh_.subscribe("/hummingbird/target", 1, &DesiredStatePublisher::pathCallback, this);
         desired_state_pub_ = nh_.advertise<quad_msgs::QuadDesiredState>("/hummingbird/desired_state", 1);
 
+        // Set velocity along Dubins path
         abs_vel = 2;
+        // Chose target radius to aproach the goal
         target_radius = 1;
+        // Proportional factor of samples generated compared to the controller frequency. I.e. Controller 50Hz and super_factor = 4
+        // --> 400 Samples per second --> send every fourth sample --> Improves Gaussian smoothing
         super_factor_ = 4;
         sample_switch_frequency_ = 50;
 
@@ -32,68 +33,28 @@ namespace depth_flight_controller {
 
     void DesiredStatePublisher::mainloop(const ros::TimerEvent& time)
     {
-
-        if (is_new_path == true) {
-            //std::cout << "new_path" << std::endl;
-            int skip = 1; // Samples skipped
+        if (is_new_path == true)
+        {
             path_ = path_new_;
             is_new_path = false;
-            if (path_.size() > 0) {
-                path_.erase(path_.begin(), path_.begin() + 3 + 4 * skip);
-            }
         }
 
-        if (path_.size() > 4) {
-            //std::cout << path_.size() << std::endl;
-            quad_msgs::QuadDesiredState desired_state;
-            desired_state = path_.front();
-            desired_state.header.stamp = ros::Time::now();
-            desired_state_pub_.publish(desired_state);
-            path_.erase(path_.begin(), path_.begin() + 3);
-        }
-
-        /*if(is_starting_ == true)
+        if (path_.size() > 4)
         {
             quad_msgs::QuadDesiredState desired_state;
             desired_state = path_.front();
             desired_state.header.stamp = ros::Time::now();
             desired_state_pub_.publish(desired_state);
             path_.erase(path_.begin(), path_.begin() + 3);
-            if (path_.size()< 5 )
-            {
-                is_starting_ == false;
-            }
-
-        } else
-        {
-            if (is_new_path == true) {
-                //std::cout << "new_path" << std::endl;
-                int skip = 1; // Samples skipped
-                path_ = path_new_;
-                is_new_path = false;
-                if (path_.size() > 0) {
-                    path_.erase(path_.begin(), path_.begin() + 3 + 4 * skip);
-                }
-            }
-
-            if (path_.size() > 4) {
-                //std::cout << path_.size() << std::endl;
-                quad_msgs::QuadDesiredState desired_state;
-                desired_state = path_.front();
-                desired_state.header.stamp = ros::Time::now();
-                desired_state_pub_.publish(desired_state);
-                path_.erase(path_.begin(), path_.begin() + 3);
-            }
-        }*/
+        }
     }
 
     void DesiredStatePublisher::pathCallback(const depth_flight_controller_msgs::Target &msg)
     {
 
-        if (msg.valid == true && ros::Time::now() - most_recent_path_generation_ > ros::Duration(2)) //&& generate_new_path_ == true
+        if (msg.valid == true && ros::Time::now() - most_recent_path_generation_ > ros::Duration(2))
         {
             is_trajectory_valid_ = true;
-            //generate_new_path_ = false;
             double current_x_pos = state_estimate_.position(0);
             double current_y_pos = state_estimate_.position(1);
             double original_x_pos = msg.position.x;
@@ -112,8 +73,6 @@ namespace depth_flight_controller {
             double current_depth    = (target_x_pos - current_x_pos) * cos(current_yaw) + (target_y_pos - current_y_pos) * sin(current_yaw);
             double current_Y        = -1*(target_x_pos - current_x_pos) * sin(current_yaw) + (target_y_pos - current_y_pos) * cos(current_yaw);
 
-            std::cout << "current Y sign: " << current_Y << std::endl;
-
             current_angle    = fabs(atan(current_Y/current_depth));
 
             if (current_angle > 0.01)
@@ -127,6 +86,7 @@ namespace depth_flight_controller {
                 current_angle   = 0;
             }
 
+            /*
             std::cout << "max depth : " << current_depth << std::endl;
             std::cout << "max depth original: " << original_depth << std::endl;
             std::cout << "current Y: " << current_Y << std::endl;
@@ -139,21 +99,14 @@ namespace depth_flight_controller {
             std::cout << "target_y_pos: " << target_y_pos << std::endl;
             std::cout << "current_side " << current_side << std::endl;
             std::cout << "curent_angle " << current_angle << std::endl;
+             */
 
             if (current_side != 0)
             {
-                //std::cout << msg.depth << std::endl;
-                //ros::Time start = ros::Time::now();
-                std::cout << "generate curve path" << std::endl;
                 path_new_ = generatePath(current_angle, current_depth, current_side, state_estimate_);
-                std::cout << "generated curve path" << std::endl;
-                //ros::Time end = ros::Time::now();
-
             } else
             {
-                std::cout << "generate straight path" << std::endl;
                 path_new_ = generateStraightPath(current_depth, state_estimate_);
-                std::cout << "generated straight path" << std::endl;
             }
 
             if (is_trajectory_valid_ == true)
@@ -168,10 +121,6 @@ namespace depth_flight_controller {
     void DesiredStatePublisher::stateEstimateCallback(const quad_msgs::QuadStateEstimate::ConstPtr &msg)
     {
         state_estimate_ = QuadState(*msg);
-        //std::cout << "O: " << state_estimate_original_.position(0) << std::endl;
-        //std::cout << "X: " << state_estimate_.position(0) - state_estimate_original_.position(0) << std::endl;
-        //std::cout << "Y: " << state_estimate_.position(1) - state_estimate_original_.position(1) << std::endl;
-
     }
 
     void DesiredStatePublisher::stateEstimateOriginalCallback(const quad_msgs::QuadStateEstimate::ConstPtr &msg)
@@ -223,8 +172,8 @@ namespace depth_flight_controller {
         }
 
         float kernel_sum = 0;
-        //for (std::vector<T>::iterator it = v.begin(); it != v.end(); ++it) {
-        for (std::vector<int>::size_type i = 0; i != v.size(); i++) {
+        for (std::vector<int>::size_type i = 0; i != v.size(); i++)
+        {
             kernel_sum += i;
         }
 
@@ -244,20 +193,15 @@ namespace depth_flight_controller {
             double sample = 0;
             int sampleCtr = 0;
             double totalWeight = 0;
-            //std::cout << "Now at value" << i << ": ";
             for (long j = i - sampleSide; j <= i + sampleSide; j++) {
-                //std::cout << j << " ";
                 if (j > 0 && j < ubound) {
                     int sampleWeightIndex = sampleSide + (j - i);
-                    //std::cout << "(" << sampleWeightIndex << " [" << kernel[sampleWeightIndex] << "]) ";
                     sample += kernel[sampleWeightIndex] * values[j];
                     totalWeight += kernel[sampleWeightIndex];
                     sampleCtr++;
                 }
             }
-            //double smoothed = sample / (double)sampleCtr;
             double smoothed = sample / totalWeight;
-            //std::cout << " S: " << sample << " C: " << sampleCtr << " V: " << values[i] << " SM: " << smoothed << std::endl;
             out.push_back(smoothed);
         }
         return out;
@@ -267,22 +211,18 @@ namespace depth_flight_controller {
 
         std::vector <quad_msgs::QuadDesiredState> path_smoothed;
 
-        if (target_depth < 0.7) {
+        if (target_depth < 0.7)
+        {
             target_depth = 0.7;
         }
-        //static const float target_radius = 3;       // in
-        //static const float abs_vel = 1;             // in m/s
         float controller_freq = 50;    // in Hz¡
         static const float pi = 3.14159;
         double sigma_ = 0.5;
         int kernel_size_ = 51;
 
         controller_freq = super_factor_ * controller_freq;
-        //float target_angle_deg = 20;    // in DEG
-        //float target_depth = 5;
 
         float target_x = target_depth;
-        //float target_angle_rad = 2 * pi / 360 * target_angle_deg;
         float target_y = tan(target_angle_rad) * target_depth;
 
         // calculate first circle information
@@ -321,7 +261,7 @@ namespace depth_flight_controller {
         float p2_x;
         float p2_y;
         float change_curve_angle;
-/*
+
         if (target_angle_rad > 0.06)
         {
             float direction_diff_curve_end = alpha - target_angle_rad;
@@ -365,7 +305,7 @@ namespace depth_flight_controller {
             y_c = E * x_c + F;
 
             number_samples_curve = int(change_curve_angle / sample_step_rad_diff);
-        }*/
+        }
 
         std::vector<double> path_x_pos;
         std::vector<double> path_y_pos;
@@ -400,7 +340,7 @@ namespace depth_flight_controller {
 
             sample_step_rad = sample_step_rad + sample_step_rad_diff;
         }
-/*
+
         if (target_angle_rad > 0.06) {
             // calculate second circle information
             float alpha_2 = change_curve_angle - target_angle_rad;
@@ -479,7 +419,7 @@ namespace depth_flight_controller {
 
                 sample_step_dist_total = sample_step_dist_total + sample_step_dist;
 
-            } */
+            }
 
             // yaw rate
             for (int i = yaw_switch + 1; i < (number_samples_curve); ++i) {
@@ -559,13 +499,12 @@ namespace depth_flight_controller {
 
                 path_smoothed.push_back(desired_state);
             }
-        //}
+        }
         return path_smoothed;
     }
 
     std::vector<quad_msgs::QuadDesiredState> DesiredStatePublisher::generateStraightPath(double target_depth, QuadState state_estimate)
     {
-        //static const float abs_vel = 2;             // in m/s
         float controller_freq = 50;    // in Hz¡
 
         controller_freq = super_factor_ * controller_freq;
@@ -645,7 +584,6 @@ namespace depth_flight_controller {
 
     std::vector<quad_msgs::QuadDesiredState> DesiredStatePublisher::generateStarterPath()
     {
-        //static const float abs_vel = 2;             // in m/s
         float controller_freq = 50;    // in Hz¡
 
         controller_freq = super_factor_ * controller_freq;

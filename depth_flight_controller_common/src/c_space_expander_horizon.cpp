@@ -170,7 +170,6 @@ namespace depth_flight_controller {
 
     void CSpaceExpanderHorizon::imageCallback(const sensor_msgs::ImageConstPtr& msg)
     {
-        ros::Time start = ros::Time::now();
         quad_msgs::QuadStateEstimate state_estimate_original_img_msg = state_estimate_msg_;
         QuadState state_estimate_original_img_ = state_estimate_;
 
@@ -203,10 +202,6 @@ namespace depth_flight_controller {
 
         // Expand c-space
         CSpaceExpanderHorizon::expandImage(depth_float_img_original_, depth_float_img_rounded_, horizon_points);
-
-
-        ros::Time end = ros::Time::now();
-        //std::cout << end-start << std::endl;
 
         state_estimate_original_img_pub_.publish(state_estimate_original_img_msg);
         image_pub_.publish(cv_ptr_original->toImageMsg());

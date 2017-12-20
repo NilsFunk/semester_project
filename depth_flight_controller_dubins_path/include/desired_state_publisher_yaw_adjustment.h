@@ -2,8 +2,8 @@
 // Created by nilsiism on 11.12.17.
 //
 
-#ifndef DEPTH_FLIGHT_CONTROLLER_DESIRED_STATE_PUBLISHER_H
-#define DEPTH_FLIGHT_CONTROLLER_DESIRED_STATE_PUBLISHER_H
+#ifndef DEPTH_FLIGHT_CONTROLLER_DESIRED_STATE_PUBLISHER_YAW_ADJUSTMENT_H
+#define DEPTH_FLIGHT_CONTROLLER_DESIRED_STATE_PUBLISHER_YAW_ADJUSTMENT_H
 
 #pragma once
 #include "ros/ros.h"
@@ -24,11 +24,11 @@ namespace depth_flight_controller
 {
     using namespace quad_common;
 
-    class DesiredStatePublisher
+    class DesiredStatePublisherYawAdjustment
     {
     public:
-        DesiredStatePublisher();
-        ~DesiredStatePublisher();
+        DesiredStatePublisherYawAdjustment();
+        ~DesiredStatePublisherYawAdjustment();
 
         void setDesiredState(const QuadState &state_estimate);
 
@@ -39,7 +39,6 @@ namespace depth_flight_controller
 
         void mainloop(const ros::TimerEvent& time);
 
-        //void pathGenerator();
         std::vector<quad_msgs::QuadDesiredState> generatePath(double target_angle_rad, double target_depth, int target_side, QuadState state_estimate);
         std::vector<quad_msgs::QuadDesiredState> generateStraightPath(double target_depth, QuadState state_estimate);
         std::vector<quad_msgs::QuadDesiredState> generateStarterPath();
@@ -65,9 +64,7 @@ namespace depth_flight_controller
         double controller_frequency_;
         double sample_switch_frequency_;
 
-        bool generate_new_path_;
         bool is_new_path;
-        bool is_starting_;
         bool is_trajectory_valid_;
 
         std::vector<quad_msgs::QuadDesiredState> path_;
@@ -83,4 +80,4 @@ namespace depth_flight_controller
     };
 }
 
-#endif //DEPTH_FLIGHT_CONTROLLER_DESIRED_STATE_PUBLISHER_H
+#endif //DEPTH_FLIGHT_CONTROLLER_DESIRED_STATE_PUBLISHER_YAW_ADJUSTMENT_H

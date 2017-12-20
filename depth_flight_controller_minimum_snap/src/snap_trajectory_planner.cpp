@@ -13,7 +13,7 @@ namespace depth_flight_controller {
         desired_state_pub_ = nh_.advertise<quad_msgs::QuadDesiredState>("/hummingbird/desired_state", 1);
         path_pub_ = nh_.advertise<depth_flight_controller_msgs::PathPositions>("/hummingbird/path", 1);
 
-        abs_vel_ = 1.0;
+        abs_vel_ = 2.0;
 
         main_loop_timer_ = nh_.createTimer(ros::Duration(1.0 / 50), &SnapTrajectoryPlanner::mainloop, this);
 
@@ -33,22 +33,22 @@ namespace depth_flight_controller {
             desired_state = path_.front();
             if (is_new_path_ == true)
             {
-                std::cout << "Distance x-direction while publishing - state - desired: " << (state_estimate_.position(0)-desired_state.position.x) << std::endl;
-                std::cout << "Distance y-direction while publishing - state - desired: " << (state_estimate_.position(1)-desired_state.position.y) << std::endl;
+                //std::cout << "Distance x-direction while publishing - state - desired: " << (state_estimate_.position(0)-desired_state.position.x) << std::endl;
+                //std::cout << "Distance y-direction while publishing - state - desired: " << (state_estimate_.position(1)-desired_state.position.y) << std::endl;
                 is_new_path_ = false;
             }
             desired_state.header.stamp = ros::Time::now();
+
             desired_state_pub_.publish(desired_state);
             path_.erase(path_.begin());
             curr_state_ = desired_state;
-            //curr_path_ = path_;
-
         }
     }
 
     void SnapTrajectoryPlanner::pathCallback(const depth_flight_controller_msgs::Target &msg)
     {
-        if (msg.valid == true && ros::Time::now() - most_recent_path_generation_ > ros::Duration(4) && is_state_estimate_init_ == true) {
+        if (msg.valid == true && ros::Time::now() - most_recent_path_generation_ > ros::Duration(2) && is_state_estimate_init_ == true)
+        {
             double state_x_pos = state_estimate_.position(0);
             double state_y_pos = state_estimate_.position(1);
 
@@ -92,15 +92,6 @@ namespace depth_flight_controller {
             const int derivative_to_optimize = mav_trajectory_generation::derivative_order::SNAP;
             mav_trajectory_generation::Vertex start(dimension), middle(dimension), end(dimension);
 
-            /*
-            if (curr_path_.size() > 2)
-            {
-                curr_path_.erase(curr_path_.begin(), curr_path_.begin()+1);
-                curr_state_ = curr_path_.front();
-            }
-            */
-
-
             if (do_initialize_ == true) {
                 curr_state_.position.x = state_estimate_.position(0);
                 curr_state_.position.y = state_estimate_.position(1);
@@ -109,32 +100,18 @@ namespace depth_flight_controller {
                 do_initialize_ == false;
             }
 
-            std::cout << "Distance x-direction while path planning - state - desired: "
-                      << (state_estimate_.position(0) - curr_state_.position.x) << std::endl;
-            std::cout << "Distance y-direction while path planning - state - desired: "
-                      << (state_estimate_.position(1) - curr_state_.position.y) << std::endl;
-
-
             // Optional define start of curve as current position
-            /*
+/*
             Eigen::Vector4d start_pos(state_estimate_.position(0), state_estimate_.position(1), state_estimate_.position(2), state_yaw);
             Eigen::Vector4d start_vel(state_estimate_.velocity(0), state_estimate_.velocity(1), state_estimate_.velocity(2), curr_state_.yaw_rate);
-            */
+*/
 
-            Eigen::Vector4d start_pos(curr_state_.position.x, curr_state_.position.y, curr_state_.position.z,
-                                      curr_state_.yaw);
-            Eigen::Vector4d start_vel(curr_state_.velocity.x, curr_state_.velocity.y, curr_state_.velocity.z,
-                                      curr_state_.yaw_rate);
+            Eigen::Vector4d start_pos(curr_state_.position.x, curr_state_.position.y, curr_state_.position.z, curr_state_.yaw);
+            Eigen::Vector4d start_vel(curr_state_.velocity.x, curr_state_.velocity.y, curr_state_.velocity.z, curr_state_.yaw_rate);
             Eigen::Vector4d start_acc(curr_state_.acceleration.x, curr_state_.acceleration.y,
                                       curr_state_.acceleration.z, curr_state_.yaw_acceleration);
             Eigen::Vector4d start_jerk(curr_state_.jerk.x, curr_state_.jerk.y, curr_state_.jerk.z, 0);
             Eigen::Vector4d start_snap(curr_state_.snap.x, curr_state_.snap.y, curr_state_.snap.z, 0);
-
-            //std::cout << "start pos: " << start_pos << std::endl;
-            //std::cout << "start vel: " << start_vel << std::endl;
-            //std::cout << "start acc: " << start_acc << std::endl;
-            //std::cout << "start jerk: " << start_jerk << std::endl;
-            //std::cout << "start snap: " << start_snap << std::endl;
 
             // Add vertices
             start.addConstraint(mav_trajectory_generation::derivative_order::POSITION, start_pos);
@@ -160,12 +137,12 @@ namespace depth_flight_controller {
 
             // Determine segments
             std::vector<double> segment_times;
-            const double v_max = 1.0;
+            const double v_max = 2.0;
             const double a_max = 2.0;
             const double magic_fabian_constant = 6.5; // A tuning parameter.
             segment_times = estimateSegmentTimes(vertices, v_max, a_max, magic_fabian_constant);
 
-            /*
+
             ////Linear optimization
             // Solve equation
             const int N = 10;
@@ -175,10 +152,10 @@ namespace depth_flight_controller {
 
             mav_trajectory_generation::Trajectory trajectory;
             opt.getTrajectory(&trajectory);
-            */
+
 
             ////Non-linear optimization
-
+/*
             mav_trajectory_generation::NonlinearOptimizationParameters parameters;
             parameters.max_iterations = 1000;
             parameters.f_rel = 0.05;
@@ -195,16 +172,17 @@ namespace depth_flight_controller {
 
             mav_trajectory_generation::Trajectory trajectory;
             opt.getTrajectory(&trajectory);
+*/
 
             // Different way to get trajectory samples
-            /*
+/*
             //Whole trajectory:
             mav_msgs::EigenTrajectoryPoint state;
             mav_msgs::EigenTrajectoryPoint::Vector states;
 
             double sampling_interval = 0.02;
             bool success = mav_trajectory_generation::sampleWholeTrajectory(trajectory, sampling_interval, &states);
-            */
+*/
 
             // Sample range:
             int int_pos = mav_trajectory_generation::derivative_order::POSITION;
@@ -299,11 +277,12 @@ namespace depth_flight_controller {
             double end_Time = endTime.toSec();
             double start_Time = startTime.toSec();
 
-            std::cout  << "Duration for path planning: " << end_Time - start_Time << std::endl;
+            // Delete number sampels skipped during planning while the drone still moved
+/*
+            int number_delted_samples = int((end_Time-start_Time)/0.02);
+            path.erase(path.begin(),path.begin()+number_delted_samples);
+*/
 
-            //int number_delted_samples = int((end_Time-start_Time)/0.02);
-
-            //path.erase(path.begin(),path.begin()+number_delted_samples);
             path_.clear();
             path_ = path;
 

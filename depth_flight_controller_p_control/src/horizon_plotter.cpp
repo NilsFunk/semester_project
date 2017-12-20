@@ -1,11 +1,4 @@
-//
-// Created by nilsiism on 13.11.17.
-//
-
 #include "horizon_plotter.h"
-
-//std::cout << "left: " << pt1_ << "; right: " << pt2_ << std::endl;
-//std::cout << "left: " << depth_edge_left_ << "; right: " << depth_edge_right_ << std::endl;
 
 namespace depth_flight_controller
 {
@@ -18,8 +11,6 @@ namespace depth_flight_controller
 
         cmd_vel_base_frame_pub_ =  nh_.advertise<geometry_msgs::TwistStamped>("/hummingbird/base_frame_cmd_vel", 1);
         horizon_points_pub_ =  nh_.advertise<depth_flight_controller_msgs::HorizonPoints>("/hummingbird/horizon_points", 1);
-
-        //cv::namedWindow(OPENCV_WINDOW01);
 
         rotate_left_ = false;
         rotate_right_ = false;
@@ -34,7 +25,7 @@ namespace depth_flight_controller
 
     HorizonPlotter::~HorizonPlotter()
     {
-        //cv::destroyWindow(OPENCV_WINDOW01);
+
     }
 
 
@@ -77,6 +68,8 @@ namespace depth_flight_controller
 
     void HorizonPlotter::expandedImageCallback(const sensor_msgs::ImageConstPtr& msg)
     {
+        ros::Time start = ros::Time::now();
+
         cv_bridge::CvImagePtr cv_ptr_expanded;
 
         try
@@ -96,13 +89,9 @@ namespace depth_flight_controller
 
         HorizonPlotter::horizonAnalyze();
 
-        std::cout << obstacle_depth_ << std::endl;
-
-        HorizonPlotter::cmdVelPlotter();
+        HorizonPlotter::cmdVelPlotter(max_depth_, max_depth_pos_, horizon_center_, state_estimate_);
 
         HorizonPlotter::plotHorizonPoints();
-
-        //cv::imshow(OPENCV_WINDOW01, image_name);
     }
 
 
@@ -127,6 +116,7 @@ namespace depth_flight_controller
         HorizonPlotter::fullLine(pt1, pt2);
     }
 
+// Find depth values without convolution
 /*
     void HorizonPlotter::horizonAnalyze()
     {
@@ -247,8 +237,6 @@ namespace depth_flight_controller
         depth_edge_left_ = depth_expanded_img_.at<float>(left_edge_pos_);
         depth_edge_right_ = depth_expanded_img_.at<float>(right_edge_pos_);
         depth_center_ = depth_expanded_img_.at<float>(horizon_center_);
-
-        //std::cout << "depth_edge_left: " << depth_edge_left_ << "; depth_edge_right: " << depth_edge_right_ << std::endl;
 
         // Reset values
         max_depth_ = 0;
@@ -382,8 +370,6 @@ namespace depth_flight_controller
 
         if (max_left_of_horizon == 0)
         {
-            //std::cout << max_depth_ << std::endl;
-
             min_depth_ib_ = max_depth_;
             min_depth_ib_pos_ = max_depth_pos_;
         } else
@@ -409,22 +395,17 @@ namespace depth_flight_controller
                     {
                         max_dist_center_ib_min_ = dist_center;
                         min_depth_ib_ = expanded_depth;
-                        //std::cout << min_depth_ib_ << std::endl;
                         min_depth_ib_pos_ = pos;
                     }
                 }
             }
         }
 
-        //std::cout << "max_depth: " << max_depth_ << std::endl;
-
         if (max_depth_ >= 4.5)
         {
             int length_free_space = free_space_points.size();
-            //int take_pos = int(length_free_space/2);
             int take_pos = int(depth_edge_right_/(depth_edge_left_+ depth_edge_right_)*length_free_space);
             max_depth_pos_ = free_space_points[take_pos];
-            //std::cout << "length: " << length_free_space << "; take_pos: " << take_pos << "; max_depth_pos: " << max_depth_pos_ << std::endl;
         }
 
         if (max_depth_ > 1.0)
@@ -449,6 +430,7 @@ namespace depth_flight_controller
     {
         Eigen::Vector3d eig_left(pt1_.x,pt1_.y,0);
         Eigen::Vector3d eig_right(pt2_.x-1,pt2_.y,0);
+
         Eigen::Vector3d eig_center(horizon_center_.x,horizon_center_.y,0);
         Eigen::Vector3d eig_max_depth(max_depth_pos_.x, max_depth_pos_.y,0);
         Eigen::Vector3d eig_min_depth_left(min_depth_left_pos_.x, min_depth_left_pos_.y,0);
@@ -515,6 +497,8 @@ namespace depth_flight_controller
         state_estimate_ = QuadState(*msg);
     }
 
+// Alternative option for drone velocity control
+/*
     void HorizonPlotter::cmdVelPlotter()
     {
         acc_ = 0.5;
@@ -541,9 +525,9 @@ namespace depth_flight_controller
 
         cmd_vel_base_frame_pub_.publish(msg_cmd);
     }
+*/
 
-/*
-    void HorizonPlotter::cmdVelPlotter2(const int &max_depth, const cv::Point &max_depth_pos, cv::Point &horizon_center_pos, const QuadState &state_estimate)
+    void HorizonPlotter::cmdVelPlotter(const int &max_depth, const cv::Point &max_depth_pos, cv::Point &horizon_center_pos, const QuadState &state_estimate)
     {
         int max_depth_pos_x = max_depth_pos.x;
         int horizon_center_pos_x = horizon_center_pos.x;
@@ -588,8 +572,6 @@ namespace depth_flight_controller
             {
                 if (depth_center_ > 0.8) //&& max_depth_loc_x < 30
                 {
-                    //msg_cmd.twist.linear.x = 0.0;
-                    //msg_cmd.twist.angular.z = 0.5;
                     rotate_left_ = false;
                     rotate_right_ = false;
                 } else
@@ -602,8 +584,6 @@ namespace depth_flight_controller
             {
                 if (depth_center_ > 0.8) //&& max_depth_loc_x > 130
                 {
-                    //msg_cmd.twist.linear.x = 0.0;
-                    //msg_cmd.twist.angular.z = -0.5;
                     rotate_right_ = false;
                     rotate_right_ = false;
                 } else
@@ -615,7 +595,7 @@ namespace depth_flight_controller
         }
 
         cmd_vel_base_frame_pub_.publish(msg_cmd);
-    }*/
+    }
 
 
     std::vector<cv::Point3f> HorizonPlotter::generate3DPoints()
